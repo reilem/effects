@@ -19,11 +19,23 @@ let rec print_tuple_list lst =
     aux lst;
     printf "]\n"
 
+let print_list lst =
+  printf "[";
+  let rec aux = function
+    | [] -> ()
+    | [x] -> printf "%d" x
+    | e :: l ->
+      printf "%d, " e;
+      aux l
+  in
+    aux lst;
+    printf "]\n"
+
 let board = ref []
 
 let makeBoard n =
   let rec generate a acc =
-    if a == n then board := acc
+    if a == (n+1) then board := acc
     else generate (a + 1) (acc @ [a])
   in generate 1 []
 
@@ -46,7 +58,7 @@ let noAttack (x1,y1) (x2,y2) =
 let available x queens =
   filter (
     (fun y -> for_all (noAttack (x,y)) queens)
-  ) [1; 2; 3; 4; 5; 6; 7; 8]
+  ) !board
 
 let handle program =
   try program n with
