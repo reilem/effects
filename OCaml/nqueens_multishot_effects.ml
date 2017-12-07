@@ -1,12 +1,12 @@
 open Printf
 open List
-open Array
 open Sys
 
 type result = Failure | Success of (int * int) list
 
 effect Select : int list -> int
 
+(* Prints the result in readable from *)
 let rec print_tuple_list lst =
   printf "[";
   let rec aux = function
@@ -19,35 +19,16 @@ let rec print_tuple_list lst =
     aux lst;
     printf "]\n"
 
-let print_list lst =
-  printf "[";
-  let rec aux = function
-    | [] -> ()
-    | [x] -> printf "%d" x
-    | e :: l ->
-      printf "%d, " e;
-      aux l
-  in
-    aux lst;
-    printf "]\n"
-
-let board = ref []
-
-let makeBoard n =
-  let rec generate a acc =
-    if a == (n+1) then board := acc
-    else generate (a + 1) (acc @ [a])
-  in generate 1 []
-
+(* Fetches n from input args or uses 8 as default *)
 let n =
-  let return n =
-    makeBoard n;
-    n
-  in
-  if length argv > 1 then
-    return (int_of_string argv.(1))
-  else
-    return 8
+  if Array.length argv > 1 then int_of_string argv.(1) else 8
+
+(* Uses n to generate a default row, ex n = 4, row = [1;2;3;4] *)
+let row =
+  let rec gen acc x = match x with
+    | 0 -> acc
+    | _ -> gen (x::acc) (x - 1)
+  in gen [] n
 
 (* noAttack : (a,a) -> (a,a) -> bool:
     checks if two coordinates are valid and wont attack each other *)
@@ -58,8 +39,9 @@ let noAttack (x1,y1) (x2,y2) =
 let available x queens =
   filter (
     (fun y -> for_all (noAttack (x,y)) queens)
-  ) !board
+  ) row
 
+(* Effect handler *)
 let handle program =
   try program n with
   | effect (Select lst) k ->
@@ -74,6 +56,7 @@ let handle program =
     in
       attempt lst
 
+(* Queens solver *)
 let queens n =
   let rec solve x qns =
     if x == (n + 1) then
@@ -84,4 +67,5 @@ let queens n =
   in
   solve 1 []
 
+(* Main *)
 let _ = handle queens
