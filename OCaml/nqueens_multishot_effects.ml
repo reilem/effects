@@ -8,16 +8,11 @@ effect Select : int list -> int
 
 (* Prints the result in readable from *)
 let rec print_tuple_list lst =
-  printf "[";
   let rec aux = function
-    | [] -> ()
-    | [(a,b)] -> printf "(%d,%d)" a b
-    | (a,b) :: l ->
-      printf "(%d,%d)" a b;
-      aux l
-  in
-    aux lst;
-    printf "]\n"
+    | []          -> ()
+    | (a,b) :: [] -> printf "(%d,%d)]\n" a b
+    | (a,b) :: l  -> printf "(%d,%d)" a b; aux l
+  in printf "["; aux lst
 
 (* Fetches n from input args or uses 8 as default *)
 let n =
@@ -37,9 +32,7 @@ let noAttack (x1,y1) (x2,y2) =
 
 (* available :  a -> [(a, a)] -> [a]*)
 let available x queens =
-  filter (
-    (fun y -> for_all (noAttack (x,y)) queens)
-  ) row
+  filter (fun y -> for_all (noAttack (x,y)) queens) row
 
 (* Effect handler *)
 let handle program =
@@ -47,25 +40,20 @@ let handle program =
   | effect (Select lst) k ->
     let rec attempt l =
       match l with
-      | [] -> Failure
-      | x::xs -> (
+      | []    -> Failure
+      | x::xs ->
         match continue (Obj.clone_continuation k) x with
           | Success y -> print_tuple_list (rev y); attempt xs
-          | Failure -> attempt xs
-      )
-    in
-      attempt lst
+          | Failure   -> attempt xs
+    in attempt lst
 
 (* Queens solver *)
 let queens n =
   let rec solve x qns =
-    if x == (n + 1) then
-      Success qns
-    else
-      let next = perform (Select (available x qns)) in
-        solve (x + 1) ((x,next) :: qns)
-  in
-  solve 1 []
+    if x == (n + 1) then Success qns
+    else let next = perform (Select (available x qns))
+    in solve (x + 1) ((x,next) :: qns)
+  in solve 1 []
 
 (* Main *)
 let _ = handle queens
