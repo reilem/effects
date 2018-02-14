@@ -12,7 +12,7 @@ let rec print_tuple_list lst =
     | []          -> ()
     | (a,b) :: [] -> printf "(%d,%d)]\n" a b
     | (a,b) :: l  -> printf "(%d,%d)" a b; aux l
-  in printf "["; aux lst; printf
+  in printf "["; aux lst; printf ""
 
 (* Fetches n from input args or uses 8 as default *)
 let n =
