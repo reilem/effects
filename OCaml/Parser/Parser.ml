@@ -29,11 +29,11 @@ type token =
   | RIGHT_T
 
 let print_token = function
-  | TRUE_T        -> printf "TRUE;"
-  | FALSE_T       -> printf "FALSE;"
-  | AND_T         -> printf "AND;"
-  | OR_T          -> printf "OR;"
-  | NOT_T         -> printf "NOT;"
+  | TRUE_T  -> printf "TRUE;"
+  | FALSE_T -> printf "FALSE;"
+  | AND_T   -> printf "AND;"
+  | OR_T    -> printf "OR;"
+  | NOT_T   -> printf "NOT;"
   | LEFT_T  -> printf "LEFT_BRACK;"
   | RIGHT_T -> printf "RIGHT_BRACK;"
 
