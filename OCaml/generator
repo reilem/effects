@@ -1,0 +1,14 @@
+module Generator : sig
+val NQ : int -> int
+val BS : int -> int list
+end =
+struct
+let NQ n = n
+
+
+
+let rec bitstring_generator n =
+    match n with
+    | 0 -> []
+    | n -> Random.int 2 :: (bitstring_generator (n-1))
+end
