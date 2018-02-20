@@ -8,8 +8,7 @@ struct
 
   let negate = function | 0 -> -1 | n -> n
 
-  let rec find_subarray lst =
-  match lst with
+  let rec find_subarray = function
   | []  -> []
   | ary -> perform (Check ary); find_subarray @@ tl ary
 
