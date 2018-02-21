@@ -14,8 +14,8 @@ struct
   let id x = x
 
   let nqueens = id
-  let stress = id
   let fibo = id
+  let stress x = 100*x
 
   let rec pipes n =
     match n with

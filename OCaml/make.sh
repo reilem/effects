@@ -2,6 +2,8 @@
 # $ chmod +x make.sh
 # Run this script:
 # $ ./make.sh
+# Run the executable:
+# $ ./run
 
 # Compile the generator
 ocamlopt -c Generator/generator.ml
@@ -16,6 +18,9 @@ ocamlopt -c -I Generator -I NQueens -I Memoization \
 -I StressTest -I Pipes -I Parser Timer/timer.ml
 
 # Make executable
-ocamlopt -o Executables/run Generator/generator.cmx NQueens/nqueens.cmx \
+ocamlopt -o run Generator/generator.cmx NQueens/nqueens.cmx \
 Memoization/fibonacci.cmx StressTest/stresstest.cmx Pipes/pipes.cmx \
 Parser/parser.cmx Timer/timer.cmx
+
+# Run the executable
+echo "# Compiled succesfully: ./run [FUNC_NAME] [UPPER_LIMIT] to run tests #"
