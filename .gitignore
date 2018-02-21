@@ -1,4 +1,10 @@
+# Mac OS git ignores
+# -----------------
+
 .DS_Store
+
+# OCaml git ignores
+# -----------------
 
 *.cmi
 *.cmo
@@ -8,3 +14,11 @@
 *.txt
 
 OCaml/run
+
+# Eff git ignores
+# -----------------
+
+
+
+# Links git ignores
+# -----------------
