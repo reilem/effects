@@ -48,32 +48,11 @@ struct
     | []      -> printf "\n"
     | a::rest -> print_token a; print_token_list rest
 
-  let rec eval (expr : expression) : bool =
-    match expr with
-    | TRUE            -> true
-    | FALSE           -> false
-    | AND (exp1,exp2) -> eval exp1 && eval exp2
-    | OR  (exp1,exp2) -> eval exp1 || eval exp2
-    | NOT exp         -> not @@ eval exp
-
   let explode s =
     let rec expl i l =
       if i < 0 then l else
       expl (i - 1) (s.[i] :: l) in
     expl (String.length s - 1) []
-
-  let rec analyse (acc: token list) (clist : char list) : token list =
-    match clist with
-    | []                  -> rev acc
-    | 'A'::'N'::'D'::rest -> analyse (AND_T::acc) rest
-    | 'O'::'R'::rest      -> analyse (OR_T::acc) rest
-    | 'N'::'O'::'T'::rest -> analyse (NOT_T::acc) rest
-    | '('::rest           -> analyse (LEFT_T::acc) rest
-    | ')'::rest           -> analyse (RIGHT_T::acc) rest
-    | '0'::rest           -> analyse (FALSE_T::acc) rest
-    | '1'::rest           -> analyse (TRUE_T::acc) rest
-    | ' '::rest           -> analyse acc rest
-    | _::rest             -> raise Syntax_Error
 
   let rec find_next_exp_list (acc : token list) (lst : token list) (depth : int) : (token list * token list) =
     match lst with
@@ -94,26 +73,47 @@ struct
       else
         find_next_exp_list (any::acc) rest depth
 
-  let rec convert_token_list (lst : token list) : expression =
+  let rec evaluate (expr : expression) : bool =
+    match expr with
+    | TRUE            -> true
+    | FALSE           -> false
+    | AND (exp1,exp2) -> evaluate exp1 && evaluate exp2
+    | OR  (exp1,exp2) -> evaluate exp1 || evaluate exp2
+    | NOT exp         -> not @@ evaluate exp
+
+  let rec analyse (lst : token list) : expression =
     match lst with
     | AND_T::rest   ->
       let (exp_left,remainder) = find_next_exp_list [] rest 0 in
       let (exp_right,_) = find_next_exp_list [] remainder 0 in
-      AND (convert_token_list exp_left,convert_token_list exp_right)
+      AND (analyse exp_left,analyse exp_right)
     | OR_T::rest   ->
       let (exp_left,remainder) = find_next_exp_list [] rest 0 in
       let (exp_right,_) = find_next_exp_list [] remainder 0 in
-      OR (convert_token_list exp_left,convert_token_list exp_right)
+      OR (analyse exp_left,analyse exp_right)
     | NOT_T::rest   ->
       let (exp,_) = find_next_exp_list [] rest 0 in
-      NOT (convert_token_list exp)
+      NOT (analyse exp)
     | TRUE_T::rest  -> TRUE
     | FALSE_T::rest -> FALSE
     | _             -> raise Lexical_Error
 
+  let rec tokenize (acc: token list) (clist : char list) : token list =
+    match clist with
+    | []                  -> rev acc
+    | 'A'::'N'::'D'::rest -> tokenize (AND_T::acc) rest
+    | 'O'::'R'::rest      -> tokenize (OR_T::acc) rest
+    | 'N'::'O'::'T'::rest -> tokenize (NOT_T::acc) rest
+    | '('::rest           -> tokenize (LEFT_T::acc) rest
+    | ')'::rest           -> tokenize (RIGHT_T::acc) rest
+    | '0'::rest           -> tokenize (FALSE_T::acc) rest
+    | '1'::rest           -> tokenize (TRUE_T::acc) rest
+    | ' '::rest           -> tokenize acc rest
+    | _::rest             -> raise Syntax_Error
+
   let solve str =
     let clist = explode str in
-    eval @@ convert_token_list @@ analyse [] clist
+    evaluate @@ analyse @@ tokenize [] clist
 
   let parse file =
     let ic = open_in file in
