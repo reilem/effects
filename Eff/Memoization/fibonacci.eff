@@ -1,12 +1,9 @@
-open List;;
-
 effect Put : (int * int) -> unit
 
 effect Get : int -> int option
 
 let rec fibo_mem = function
-  | 0 -> 1
-  | 1 -> 1
+  | 0 -> 0 | 1 -> 1 | 2 -> 1
   | n -> match #Get n with
     | Some x -> x
     | None -> let value = fibo_mem (n - 1) + fibo_mem (n - 2) in #Put (n,value); value
@@ -17,4 +14,6 @@ let store = handler
   | #Get n k -> k None
 ;;
 
-with store handle (fibo_mem n)
+let solve n =
+  with store handle (fibo_mem n)
+;;
