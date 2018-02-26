@@ -24,7 +24,7 @@ struct
   let available x n queens =
     filter (fun y -> for_all (noAttack (x,y)) queens) @@ row n
 
-  let solve n = try
+  let solve n  = try
     let rec solver x qns =
       if x == (n + 1) then Success qns
       else let next = perform (Select (available x n qns)) in
@@ -37,7 +37,7 @@ struct
         | []    -> Failure
         | x::xs ->
           match continue (Obj.clone_continuation k) x with
-            | Success y -> print (rev y); attempt xs
+            | Success y -> (*print (rev y);*) attempt xs
             | Failure   -> attempt xs
       in attempt lst
 end
