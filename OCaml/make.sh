@@ -1,3 +1,4 @@
+set -e
 # Give execution permission to this script:
 # $ chmod +x make.sh
 # Run this script:
@@ -22,5 +23,11 @@ ocamlopt -o run Generator/generator.cmx NQueens/nqueens.cmx \
 Memoization/fibonacci.cmx StressTest/stresstest.cmx Pipes/pipes.cmx \
 Parser/parser.cmx Timer/timer.cmx
 
-# Run the executable
+# Output message
 echo "# Compiled succesfully: ./run [FUNC_NAME] [UPPER_LIMIT] to run tests #"
+echo "# Working function list:"
+echo "# NQ"
+echo "# PRS"
+echo "# PIPES"
+echo "# FIB"
+echo "# STRESS"
