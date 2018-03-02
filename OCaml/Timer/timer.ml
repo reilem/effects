@@ -1,9 +1,8 @@
 open Printf
-open List
+open Array
 open Sys
 
 open Generator
-
 open Nqueens
 open Parser
 open Pipes
@@ -11,28 +10,30 @@ open Fibonacci
 open Stresstest
 
 module Evaluator : sig
-  val evaluateF : string -> int -> unit
+  val evaluateF : string -> int -> int -> int -> int -> unit
 end =
 struct
 
-  let output_file = "test.txt"
+  let timer f x m =
+    let rec calc_average_time sum = function
+    | 0 -> sum /. (float m)
+    | n ->
+      let t0 = Sys.time() in
+      let _ = f x in
+      let diff = (Sys.time() -. t0) *. 1000.0 in
+      calc_average_time (sum +. diff) (n - 1)
+    in
+    calc_average_time 0.0 m
 
-  let timer f x =
-    let t0 = Sys.time()
-    in let _ = f x
-    in let diff = (Sys.time() -. t0) *. 1000.0
-    in diff
-
-  let evaluateF func upperlimit =
-    let evaluate solver generator =
-      printf "Running tests...\n";
+  let evaluateF func strt up avg stp =
+    let output_file =  "out/" ^ func ^ ".csv" in
+    let ary = init (((up - strt) / stp) + 1) (fun i -> strt + (stp * i)) in
+    let evaluate solver gen =
       let oc = open_out output_file in
-        for n = 1 to upperlimit do
-          fprintf oc "%f\n" (timer solver (generator n));
-        done;
-      printf "Results output to: %s\n" output_file;
+        fprintf oc "n,x\n";
+        iter (fun n -> fprintf oc "%d,%f\n" n (timer solver (gen n) avg)) ary;
       close_out oc;
-      printf "Tests finished!\n"
+      printf "Results output to: %s\n" output_file;
     in
     match func with
     | "NQ"     -> evaluate NQueens.solve Generator.nqueens
@@ -45,4 +46,16 @@ struct
     | "TREE" -> evaluate NQueens.solve Generator.tree *)
 end
 
-let _ = Evaluator.evaluateF argv.(1) (int_of_string argv.(2))
+let getInt n = int_of_string argv.(n)
+
+let _ =
+  match length argv with
+  | 3 ->
+    Evaluator.evaluateF argv.(1) 1 (getInt 2) 1 1
+  | 4 ->
+    Evaluator.evaluateF argv.(1) 1 (getInt 2) (getInt 3) 1
+  | 5 ->
+    Evaluator.evaluateF argv.(1) (getInt 2) (getInt 3) (getInt 4) 1
+  | 6 ->
+    Evaluator.evaluateF argv.(1) (getInt 2) (getInt 3) (getInt 4) (getInt 5)
+  | _ -> ()
