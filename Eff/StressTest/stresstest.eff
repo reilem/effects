@@ -1,0 +1,23 @@
+
+effect E : int -> bool * int
+
+let rec loop v =
+  let (continue, state) = #E v in
+  if continue then loop state
+  else ()
+;;
+
+
+let looper n =
+  handler
+  | #E s k ->
+    if s < n then
+      k (true, s + 1)
+    else
+      k (false, -1)
+;;
+
+let solve n =
+  with looper n
+  handle loop 1
+;;
