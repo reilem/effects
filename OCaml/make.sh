@@ -45,13 +45,20 @@ make() {
 
   # Output message
   echo "# Compiled succesfully."
-  echo "# Command to run tests: ./run [FUNC_NAME] [UPPER_LIMIT]"
+  echo "# Commands to run tests:"
+  echo "# $ ./run [FUNCTION] [UPPER_LIMIT]"
+  echo "# $ ./run [FUNCTION] [UPPER_LIMIT] [AVERAGE_RUNS]"
+  echo "# $ ./run [FUNCTION] [LOWER_LIMIT] [UPPER_LIMIT] [AVERAGE_RUNS]"
+  echo "# $ ./run [FUNCTION] [LOWER_LIMIT] [UPPER_LIMIT] [AVERAGE_RUNS] [STEP_SIZE]"
+  echo "#   Use a FUNCTION name from the give list below."
+  echo "#   All other values to be given as integer values."
+  echo "#   Default value of 1 will be used for unpassed parameters."
   echo "# Working function list:"
-  echo "# \"NQ\""
-  echo "# \"PRS\""
-  echo "# \"PIPES\""
-  echo "# \"FIB\""
-  echo "# \"STRESS\""
+  echo "# NQ"
+  echo "# PRS"
+  echo "# PIPES"
+  echo "# FIB"
+  echo "# STRESS"
 }
 # Run main make function
 make
