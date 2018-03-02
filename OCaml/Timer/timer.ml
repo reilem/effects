@@ -1,9 +1,9 @@
 open Printf
 open List
 open Sys
+open String
 
 open Generator
-
 open Nqueens
 open Parser
 open Pipes
@@ -15,8 +15,6 @@ module Evaluator : sig
 end =
 struct
 
-  let output_file = "test.txt"
-
   let timer f x =
     let t0 = Sys.time()
     in let _ = f x
@@ -24,11 +22,13 @@ struct
     in diff
 
   let evaluateF func upperlimit =
+    let output_file =  "out/" ^ func ^ ".csv" in
     let evaluate solver generator =
       printf "Running tests...\n";
       let oc = open_out output_file in
+        fprintf oc "n,x\n";
         for n = 1 to upperlimit do
-          fprintf oc "%f\n" (timer solver (generator n));
+          fprintf oc "%d,%f\n" n (timer solver (generator n));
         done;
       printf "Results output to: %s\n" output_file;
       close_out oc;

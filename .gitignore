@@ -11,14 +11,12 @@
 *.out
 *.o
 *.cmx
-*.txt
-
+OCaml/out/*.txt
+OCaml/out/*.csv
 OCaml/run
 
 # Eff git ignores
 # -----------------
-
-
 
 # Links git ignores
 # -----------------
