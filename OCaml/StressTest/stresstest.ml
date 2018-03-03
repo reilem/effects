@@ -14,8 +14,8 @@ struct
   let solve n =
     let handler =
       match loop () with
-      | effect E k -> (fun s ->
-          if (s + 1) < n then continue k true next
+      | effect E k -> (fun s -> let next = s + 1 in
+          if next < n then continue k true next
           else continue k false next)
       | x -> (fun s -> x)
     in
