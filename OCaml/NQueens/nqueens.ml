@@ -2,11 +2,8 @@ module NQueens : sig
   val solve : int -> (int * int) list list
 end =
 struct
-  effect Fail   : unit
+  effect Fail   : int
   effect Select : bool
-
-  (* HELP FUNCTIONS *)
-  let exit () = failwith "Exit" (* Should never actually get called *)
 
   let rec filter f = function
     | []    -> []
@@ -25,7 +22,7 @@ struct
     filter (fun y -> for_all (noAttack (x,y)) queens) @@ row n
 
   let rec choose = function
-    | []    -> exit @@ perform Fail
+    | []    -> perform Fail
     | x::xs -> if perform Select then x else choose xs
 
   (* NQUEENS *)
