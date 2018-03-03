@@ -1,6 +1,3 @@
-open Printf
-open Sys
-
 effect E : bool
 
 module Loop : sig
