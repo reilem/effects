@@ -30,4 +30,4 @@ Ocaml and Eff provide a standard top level interpreter put ledit provides some m
 Ledit can be setup with `opam install ledit`, and then used with either
 `ledit ocaml` or `ledit eff`.
 
-Note: The OCaml multicore compiler may not work well
+Note: The OCaml multicore compiler may not work well together with ledit.
