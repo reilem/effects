@@ -1,6 +1,3 @@
-open Printf
-open Sys
-
 effect E : bool
 
 module Loop : sig
@@ -12,12 +9,12 @@ struct
     else ()
 
   let solve n =
-    let count = ref 0 in
-    try loop () with
-    | effect E k ->
-      count := !count + 1;
-      if !count < n then
-        continue k true
-      else
-        continue k false
+    let handler =
+      match loop () with
+      | effect E k -> (fun s -> let next = s + 1 in
+          if next < n then continue k true next
+          else continue k false next)
+      | x -> (fun s -> x)
+    in
+    handler 0
 end
