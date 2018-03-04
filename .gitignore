@@ -11,9 +11,9 @@
 *.out
 *.o
 *.cmx
-OCaml/out/*.txt
-OCaml/out/*.csv
-OCaml/run
+OCaml-multicore/out/*.txt
+OCaml-multicore/out/*.csv
+OCaml-multicore/run
 
 # Eff git ignores
 # -----------------
