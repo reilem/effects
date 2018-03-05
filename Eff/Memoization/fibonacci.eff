@@ -2,6 +2,11 @@ effect Put : (int * int) -> unit
 
 effect Get : int -> int option
 
+let rec find n = function
+  | []    -> None
+  | (v,x)::r -> if n = v then Some x else find n r
+;;
+
 let rec fibo_mem = function
   | 0 -> 0 | 1 -> 1 | 2 -> 1
   | n -> match #Get n with
@@ -10,10 +15,14 @@ let rec fibo_mem = function
 ;;
 
 let store = handler
-  | #Put (a,b) k -> k ()
-  | #Get n k -> k None
+  | val x ->
+    (fun s -> x)
+  | #Get n k ->
+    (fun s -> k (find n s) s)
+  | #Put tup k ->
+    (fun s -> k () (tup::s))
 ;;
 
 let solve n =
-  with store handle (fibo_mem n)
+  (with store handle (fibo_mem n)) []
 ;;

@@ -2,7 +2,7 @@ module Fibonacci : sig
   val solve : int -> int
 end =
 struct
-  effect Put : ((int * int)) -> unit
+  effect Put : (int * int) -> unit
   effect Get : int -> int option
 
   let rec find n = function
