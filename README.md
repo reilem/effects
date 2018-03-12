@@ -6,6 +6,10 @@
 This repo currently contains implementations for a number of problems in Eff
 and OCaml multicore. This repo is a work in progress.
 
+### Results
+
+Our results can be found at our github pages site at: https://reilem.github.io/effects/
+
 ### Setup
 
 All code in this repo will require ocaml and opam to setup, compile and run.
