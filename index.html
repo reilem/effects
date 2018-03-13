@@ -11771,9 +11771,30 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Effects-performance-comparative-studies">Effects-performance comparative studies<a class="anchor-link" href="#Effects-performance-comparative-studies">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this notebook we will perform benchmarking tests on effects in OCaml Multicore and compare this with:</p>
+<p>1) OCaml</p>
+<p>2) EFF   (Implementation in progress)</p>
+<p>3) Links (Language study in progress)</p>
+<p>4) Scala (Bonus material if possible)</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">plotly</span>
@@ -11809,32 +11830,64 @@ div#notebook {
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Benchmark-1:-Fibonacci-with-memoization">Benchmark 1: Fibonacci with memoization<a class="anchor-link" href="#Benchmark-1:-Fibonacci-with-memoization">&#182;</a></h2>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;FIB.csv&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Build a dataframe from obtained data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;FIB.csv&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])</span>
 <span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;FIB2.csv&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])</span>
 
+<span class="c1"># Build plot lines from each dataframe</span>
 <span class="n">trace1</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
-                    <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="c1"># Data</span>
-                    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Measurements (ms)&#39;</span><span class="p">,</span> <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;rgb(249, 0, 0)&#39;</span><span class="p">),</span>
-        <span class="n">width</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># Additional options</span>
-                   <span class="p">)</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> 
+                    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span> 
+                    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;OCaml Multicore - Effects&#39;</span><span class="p">,</span> 
+                    <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;rgb(249, 0, 0)&#39;</span><span class="p">),</span>
+                        <span class="n">width</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+                    <span class="p">)</span>
 
 <span class="n">trace2</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
-                    <span class="n">x</span><span class="o">=</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="c1"># Data</span>
-                    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Measurements (ms)&#39;</span><span class="p">,</span> <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;black&#39;</span><span class="p">),</span>
-        <span class="n">width</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># Additional options</span>
-                   <span class="p">)</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> 
+                    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span> 
+                    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;OCaml - Recursive&#39;</span><span class="p">,</span> 
+                    <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;black&#39;</span><span class="p">),</span>
+                        <span class="n">width</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+                    <span class="p">)</span>
 
-
+<span class="c1"># Build the plot layout with legends etc.</span>
 <span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Fibonacci Plot&#39;</span><span class="p">,</span>
-                   <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s1">&#39;rgb(230, 230,230)&#39;</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                   <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s1">&#39;rgb(230, 230,230)&#39;</span><span class="p">,</span>
+                   <span class="n">showlegend</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;# Numbers Calculated (n)&#39;</span><span class="p">,</span>
+        <span class="n">titlefont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">family</span><span class="o">=</span><span class="s1">&#39;Courier New, monospace&#39;</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Time Measurement (ms)&#39;</span><span class="p">,</span>
+        <span class="n">titlefont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">family</span><span class="o">=</span><span class="s1">&#39;Courier New, monospace&#39;</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
+<span class="c1"># Build figure from the traces</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">trace1</span><span class="p">,</span> <span class="n">trace2</span><span class="p">],</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
 
 <span class="c1"># Plot data in the notebook</span>
@@ -11856,7 +11909,7 @@ div#notebook {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div id="b33bdf90-3e44-4a8f-86cd-c0b9e79fcbe9" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("b33bdf90-3e44-4a8f-86cd-c0b9e79fcbe9", [{"name": "Measurements (ms)", "mode": "lines", "y": ["x", "0.002450", "0.235350", "0.635250", "0.207350", "0.343700", "0.440200", "0.625350", "0.801250", "0.947800", "1.335500", "1.358000", "1.604100", "1.886000", "2.713200", "2.672600", "3.347300", "3.660150", "4.501300", "4.872550", "5.571300", "6.044250", "6.856800", "8.470400", "8.423450", "9.568900", "9.418650", "11.585700", "12.287500", "14.453550", "13.833750", "14.085600", "16.136900", "17.343250", "16.822000", "19.082000", "19.620350", "21.267500", "22.560950", "23.716500", "24.726250", "26.887450", "27.506500", "27.110550", "33.350850", "31.462350", "31.313750", "32.212850", "32.802750", "36.104850", "36.111300", "39.440250", "40.594750", "42.095350", "44.230800", "45.051100", "47.644200", "46.012900", "51.735500", "50.367150", "46.413150", "63.573800", "63.347800", "64.485500", "55.199800", "59.378300", "62.247550", "62.853700", "64.642250", "67.136650", "69.500600", "70.718000", "72.821500", "74.952300", "74.994400", "77.526900", "77.455350", "84.244650", "84.413600", "91.111100", "87.304600", "90.366850", "90.706200", "93.772350", "94.784400", "98.328900", "97.362950", "98.239900", "101.519150", "103.078100", "107.714500", "107.630800", "110.952800", "112.199150", "116.172100", "118.229250", "122.233500", "123.877850", "122.771800", "127.679250", "127.442650", "127.372100"], "x": ["n", "0", "100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700", "1800", "1900", "2000", "2100", "2200", "2300", "2400", "2500", "2600", "2700", "2800", "2900", "3000", "3100", "3200", "3300", "3400", "3500", "3600", "3700", "3800", "3900", "4000", "4100", "4200", "4300", "4400", "4500", "4600", "4700", "4800", "4900", "5000", "5100", "5200", "5300", "5400", "5500", "5600", "5700", "5800", "5900", "6000", "6100", "6200", "6300", "6400", "6500", "6600", "6700", "6800", "6900", "7000", "7100", "7200", "7300", "7400", "7500", "7600", "7700", "7800", "7900", "8000", "8100", "8200", "8300", "8400", "8500", "8600", "8700", "8800", "8900", "9000", "9100", "9200", "9300", "9400", "9500", "9600", "9700", "9800", "9900", "10000"], "line": {"color": "rgb(249, 0, 0)", "width": 3}, "type": "scatter"}, {"name": "Measurements (ms)", "mode": "lines", "y": ["x", "0.001400", "0.014450", "0.039900", "0.077400", "0.127650", "0.183850", "0.281650", "0.414950", "0.569200", "0.716700", "0.802000", "1.072250", "1.244050", "1.300850", "1.578600", "2.039050", "2.253350", "2.173400", "3.126500", "3.312000", "3.070450", "3.437750", "3.905750", "4.486750", "5.159000", "5.032850", "5.922600", "6.511950", "6.266500", "6.637700", "8.082600", "8.471100", "8.227400", "9.141350", "10.357850", "10.647950", "11.331300", "11.378050", "12.322450", "12.639100", "13.854650", "13.183950", "14.629850", "14.730300", "15.800600", "16.641250", "17.122200", "18.362900", "18.481300", "19.192200", "20.123600", "21.970050", "22.279800", "22.877200", "24.448850", "24.822000", "25.924300", "26.830400", "28.030950", "30.616900", "30.636150", "31.994850", "33.930150", "33.123750", "34.298450", "34.478150", "36.556650", "37.473850", "39.669050", "39.615800", "42.651500", "41.294400", "45.332550", "42.960850", "46.016400", "48.551550", "49.734800", "49.355700", "52.616150", "51.562800", "54.023100", "54.955700", "60.143300", "61.213900", "57.723050", "62.842600", "60.790550", "66.598400", "65.643700", "70.465050", "66.163850", "71.960450", "68.772650", "76.012400", "73.099700", "80.192850", "83.062550", "86.416550", "80.197800", "87.484700", "81.319350"], "x": ["n", "0", "100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700", "1800", "1900", "2000", "2100", "2200", "2300", "2400", "2500", "2600", "2700", "2800", "2900", "3000", "3100", "3200", "3300", "3400", "3500", "3600", "3700", "3800", "3900", "4000", "4100", "4200", "4300", "4400", "4500", "4600", "4700", "4800", "4900", "5000", "5100", "5200", "5300", "5400", "5500", "5600", "5700", "5800", "5900", "6000", "6100", "6200", "6300", "6400", "6500", "6600", "6700", "6800", "6900", "7000", "7100", "7200", "7300", "7400", "7500", "7600", "7700", "7800", "7900", "8000", "8100", "8200", "8300", "8400", "8500", "8600", "8700", "8800", "8900", "9000", "9100", "9200", "9300", "9400", "9500", "9600", "9700", "9800", "9900", "10000"], "line": {"color": "black", "width": 3}, "type": "scatter"}], {"showlegend": true, "plot_bgcolor": "rgb(230, 230,230)", "title": "Fibonacci Plot"}, {"linkText": "Export to plot.ly", "showLink": true})});</script>
+<div id="2950b999-5b70-40e4-8f40-8b5610153b97" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("2950b999-5b70-40e4-8f40-8b5610153b97", [{"name": "OCaml Multicore - Effects", "mode": "lines", "y": ["x", "0.002450", "0.235350", "0.635250", "0.207350", "0.343700", "0.440200", "0.625350", "0.801250", "0.947800", "1.335500", "1.358000", "1.604100", "1.886000", "2.713200", "2.672600", "3.347300", "3.660150", "4.501300", "4.872550", "5.571300", "6.044250", "6.856800", "8.470400", "8.423450", "9.568900", "9.418650", "11.585700", "12.287500", "14.453550", "13.833750", "14.085600", "16.136900", "17.343250", "16.822000", "19.082000", "19.620350", "21.267500", "22.560950", "23.716500", "24.726250", "26.887450", "27.506500", "27.110550", "33.350850", "31.462350", "31.313750", "32.212850", "32.802750", "36.104850", "36.111300", "39.440250", "40.594750", "42.095350", "44.230800", "45.051100", "47.644200", "46.012900", "51.735500", "50.367150", "46.413150", "63.573800", "63.347800", "64.485500", "55.199800", "59.378300", "62.247550", "62.853700", "64.642250", "67.136650", "69.500600", "70.718000", "72.821500", "74.952300", "74.994400", "77.526900", "77.455350", "84.244650", "84.413600", "91.111100", "87.304600", "90.366850", "90.706200", "93.772350", "94.784400", "98.328900", "97.362950", "98.239900", "101.519150", "103.078100", "107.714500", "107.630800", "110.952800", "112.199150", "116.172100", "118.229250", "122.233500", "123.877850", "122.771800", "127.679250", "127.442650", "127.372100"], "x": ["n", "0", "100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700", "1800", "1900", "2000", "2100", "2200", "2300", "2400", "2500", "2600", "2700", "2800", "2900", "3000", "3100", "3200", "3300", "3400", "3500", "3600", "3700", "3800", "3900", "4000", "4100", "4200", "4300", "4400", "4500", "4600", "4700", "4800", "4900", "5000", "5100", "5200", "5300", "5400", "5500", "5600", "5700", "5800", "5900", "6000", "6100", "6200", "6300", "6400", "6500", "6600", "6700", "6800", "6900", "7000", "7100", "7200", "7300", "7400", "7500", "7600", "7700", "7800", "7900", "8000", "8100", "8200", "8300", "8400", "8500", "8600", "8700", "8800", "8900", "9000", "9100", "9200", "9300", "9400", "9500", "9600", "9700", "9800", "9900", "10000"], "line": {"color": "rgb(249, 0, 0)", "width": 3}, "type": "scatter"}, {"name": "OCaml - Recursive", "mode": "lines", "y": ["x", "0.001400", "0.014450", "0.039900", "0.077400", "0.127650", "0.183850", "0.281650", "0.414950", "0.569200", "0.716700", "0.802000", "1.072250", "1.244050", "1.300850", "1.578600", "2.039050", "2.253350", "2.173400", "3.126500", "3.312000", "3.070450", "3.437750", "3.905750", "4.486750", "5.159000", "5.032850", "5.922600", "6.511950", "6.266500", "6.637700", "8.082600", "8.471100", "8.227400", "9.141350", "10.357850", "10.647950", "11.331300", "11.378050", "12.322450", "12.639100", "13.854650", "13.183950", "14.629850", "14.730300", "15.800600", "16.641250", "17.122200", "18.362900", "18.481300", "19.192200", "20.123600", "21.970050", "22.279800", "22.877200", "24.448850", "24.822000", "25.924300", "26.830400", "28.030950", "30.616900", "30.636150", "31.994850", "33.930150", "33.123750", "34.298450", "34.478150", "36.556650", "37.473850", "39.669050", "39.615800", "42.651500", "41.294400", "45.332550", "42.960850", "46.016400", "48.551550", "49.734800", "49.355700", "52.616150", "51.562800", "54.023100", "54.955700", "60.143300", "61.213900", "57.723050", "62.842600", "60.790550", "66.598400", "65.643700", "70.465050", "66.163850", "71.960450", "68.772650", "76.012400", "73.099700", "80.192850", "83.062550", "86.416550", "80.197800", "87.484700", "81.319350"], "x": ["n", "0", "100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700", "1800", "1900", "2000", "2100", "2200", "2300", "2400", "2500", "2600", "2700", "2800", "2900", "3000", "3100", "3200", "3300", "3400", "3500", "3600", "3700", "3800", "3900", "4000", "4100", "4200", "4300", "4400", "4500", "4600", "4700", "4800", "4900", "5000", "5100", "5200", "5300", "5400", "5500", "5600", "5700", "5800", "5900", "6000", "6100", "6200", "6300", "6400", "6500", "6600", "6700", "6800", "6900", "7000", "7100", "7200", "7300", "7400", "7500", "7600", "7700", "7800", "7900", "8000", "8100", "8200", "8300", "8400", "8500", "8600", "8700", "8800", "8900", "9000", "9100", "9200", "9300", "9400", "9500", "9600", "9700", "9800", "9900", "10000"], "line": {"color": "black", "width": 3}, "type": "scatter"}], {"showlegend": true, "title": "Fibonacci Plot", "plot_bgcolor": "rgb(230, 230,230)", "xaxis": {"titlefont": {"color": "red", "family": "Courier New, monospace", "size": 14}, "title": "# Numbers Calculated (n)"}, "yaxis": {"titlefont": {"color": "red", "family": "Courier New, monospace", "size": 14}, "title": "Time Measurement (ms)"}}, {"linkText": "Export to plot.ly", "showLink": true})});</script>
 </div>
 
 </div>
@@ -11864,35 +11917,67 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Benchmark-2:-N-Queens">Benchmark 2: N-Queens<a class="anchor-link" href="#Benchmark-2:-N-Queens">&#182;</a></h2>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;NQ.csv&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Build a dataframe from obtained data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;NQ.csv&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])</span>
 <span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;NQ2.csv&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])</span>
 
+<span class="c1"># Build plot lines from each dataframe</span>
 <span class="n">trace1</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
-                    <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="c1"># Data</span>
-                    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;OCaml Multicore - Effects (ms)&#39;</span><span class="p">,</span> <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;rgb(249, 0, 0)&#39;</span><span class="p">),</span>
-        <span class="n">shape</span> <span class="o">=</span> <span class="s1">&#39;spline&#39;</span><span class="p">,</span>
-        <span class="n">width</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># Additional options</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> 
+                    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span> 
+                    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;OCaml Multicore - Effects&#39;</span><span class="p">,</span> 
+                    <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;rgb(249, 0, 0)&#39;</span><span class="p">),</span>
+                        <span class="n">shape</span> <span class="o">=</span> <span class="s1">&#39;spline&#39;</span><span class="p">,</span>
+                        <span class="n">width</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> 
                    <span class="p">)</span>
 
 <span class="n">trace2</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
-                    <span class="n">x</span><span class="o">=</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="c1"># Data</span>
-                    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;OCaml - Recursive (ms)&#39;</span><span class="p">,</span> <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;black&#39;</span><span class="p">),</span>
-        <span class="n">shape</span> <span class="o">=</span> <span class="s1">&#39;spline&#39;</span><span class="p">,</span>
-        <span class="n">width</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># Additional options</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span> 
+                    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;OCaml - Recursive&#39;</span><span class="p">,</span> 
+                    <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;black&#39;</span><span class="p">),</span>
+                        <span class="n">shape</span> <span class="o">=</span> <span class="s1">&#39;spline&#39;</span><span class="p">,</span>
+                        <span class="n">width</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> 
                    <span class="p">)</span>
 
+<span class="c1"># Build the plot layout with legends etc.</span>
+<span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;NQueens Plot&#39;</span><span class="p">,</span>
+                   <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s1">&#39;rgb(230, 230,230)&#39;</span><span class="p">,</span>
+                   <span class="n">showlegend</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;# Queens (n)&#39;</span><span class="p">,</span>
+        <span class="n">titlefont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">family</span><span class="o">=</span><span class="s1">&#39;Courier New, monospace&#39;</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Time Measurement (ms)&#39;</span><span class="p">,</span>
+        <span class="n">titlefont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">family</span><span class="o">=</span><span class="s1">&#39;Courier New, monospace&#39;</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;NQ Plot&#39;</span><span class="p">,</span>
-                   <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s1">&#39;rgb(230, 230,230)&#39;</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-
+<span class="c1"># Build figure from the traces</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">trace1</span><span class="p">,</span> <span class="n">trace2</span><span class="p">],</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
 
 <span class="c1"># Plot data in the notebook</span>
@@ -11914,7 +11999,7 @@ div#notebook {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div id="27fb984f-8a94-474b-ae6d-adb976e467ef" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("27fb984f-8a94-474b-ae6d-adb976e467ef", [{"name": "OCaml Multicore - Effects (ms)", "mode": "lines", "y": ["x", "0.002500", "0.004200", "0.006200", "0.013800", "0.041300", "0.149300", "0.127600", "0.353500", "1.468500", "5.501900", "22.985200", "117.262500", "625.864400", "3799.264000"], "x": ["n", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"], "line": {"color": "rgb(249, 0, 0)", "width": 3, "shape": "spline"}, "type": "scatter"}, {"name": "OCaml - Recursive (ms)", "mode": "lines", "y": ["x", "0.001500", "0.001200", "0.001800", "0.002700", "0.004700", "0.014800", "0.051700", "0.200100", "0.478300", "2.391200", "10.135000", "52.985400", "298.001200", "1808.603300"], "x": ["n", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"], "line": {"color": "black", "width": 3, "shape": "spline"}, "type": "scatter"}], {"showlegend": true, "plot_bgcolor": "rgb(230, 230,230)", "title": "NQ Plot"}, {"linkText": "Export to plot.ly", "showLink": true})});</script>
+<div id="144946d2-9390-4405-bed0-42b845ba2936" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("144946d2-9390-4405-bed0-42b845ba2936", [{"name": "OCaml Multicore - Effects", "mode": "lines", "y": ["x", "0.002500", "0.004200", "0.006200", "0.013800", "0.041300", "0.149300", "0.127600", "0.353500", "1.468500", "5.501900", "22.985200", "117.262500", "625.864400", "3799.264000"], "x": ["n", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"], "line": {"color": "rgb(249, 0, 0)", "width": 3, "shape": "spline"}, "type": "scatter"}, {"name": "OCaml - Recursive", "mode": "lines", "y": ["x", "0.001500", "0.001200", "0.001800", "0.002700", "0.004700", "0.014800", "0.051700", "0.200100", "0.478300", "2.391200", "10.135000", "52.985400", "298.001200", "1808.603300"], "x": ["n", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"], "line": {"color": "black", "width": 3, "shape": "spline"}, "type": "scatter"}], {"showlegend": true, "title": "NQueens Plot", "plot_bgcolor": "rgb(230, 230,230)", "xaxis": {"titlefont": {"color": "red", "family": "Courier New, monospace", "size": 14}, "title": "# Queens (n)"}, "yaxis": {"titlefont": {"color": "red", "family": "Courier New, monospace", "size": 14}, "title": "Time Measurement (ms)"}}, {"linkText": "Export to plot.ly", "showLink": true})});</script>
 </div>
 
 </div>
@@ -11922,38 +12007,52 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Benchmark-3:-Pipes:-Longest-subarray-with-equal-0's-and-1's">Benchmark 3: Pipes: Longest subarray with equal 0's and 1's<a class="anchor-link" href="#Benchmark-3:-Pipes:-Longest-subarray-with-equal-0's-and-1's">&#182;</a></h2>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span>
-</pre></div>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Build a dataframe from obtained data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;PIPES.csv&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])</span>
 
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;PIPES.csv&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])</span>
-
-
+<span class="c1"># Build plot lines from each dataframe</span>
 <span class="n">trace1</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
-                    <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="c1"># Data</span>
-                    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Measurements (ms)&#39;</span><span class="p">,</span> <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;rgb(249, 0, 0)&#39;</span><span class="p">),</span>
-        <span class="n">width</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># Additional options</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> 
+                    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span> 
+                    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;OCaml Multicore - Effects&#39;</span><span class="p">,</span> 
+                    <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;rgb(249, 0, 0)&#39;</span><span class="p">),</span>
+                        <span class="n">width</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> 
                    <span class="p">)</span>
 
-
+<span class="c1"># Build the plot layout with legends etc.</span>
 <span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Pipes Plot&#39;</span><span class="p">,</span>
-                   <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s1">&#39;rgb(230, 230,230)&#39;</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                   <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s1">&#39;rgb(230, 230,230)&#39;</span><span class="p">,</span>
+                   <span class="n">showlegend</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Bitstring length (n)&#39;</span><span class="p">,</span>
+        <span class="n">titlefont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">family</span><span class="o">=</span><span class="s1">&#39;Courier New, monospace&#39;</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Time Measurement (ms)&#39;</span><span class="p">,</span>
+        <span class="n">titlefont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">family</span><span class="o">=</span><span class="s1">&#39;Courier New, monospace&#39;</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">trace1</span><span class="p">],</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
 
@@ -11976,7 +12075,7 @@ div#notebook {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div id="b943bdd5-b0cc-41ba-a6e0-4cc44910d06b" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("b943bdd5-b0cc-41ba-a6e0-4cc44910d06b", [{"name": "Measurements (ms)", "mode": "lines", "y": ["x", "0.004980", "0.102100", "0.238140", "0.562060", "3.363870", "1.382230", "4.478190", "4.132020", "13.969660", "23.944700", "33.598810", "33.056860", "34.542650", "25.906060", "36.753100", "55.047360"], "x": ["n", "0", "100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "1100", "1200", "1300", "1400", "1500"], "line": {"color": "rgb(249, 0, 0)", "width": 3}, "type": "scatter"}], {"showlegend": true, "plot_bgcolor": "rgb(230, 230,230)", "title": "Pipes Plot"}, {"linkText": "Export to plot.ly", "showLink": true})});</script>
+<div id="09c6ddf1-71e0-464e-b489-5c9df6be49df" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("09c6ddf1-71e0-464e-b489-5c9df6be49df", [{"name": "OCaml Multicore - Effects", "mode": "lines", "y": ["x", "0.004980", "0.102100", "0.238140", "0.562060", "3.363870", "1.382230", "4.478190", "4.132020", "13.969660", "23.944700", "33.598810", "33.056860", "34.542650", "25.906060", "36.753100", "55.047360"], "x": ["n", "0", "100", "200", "300", "400", "500", "600", "700", "800", "900", "1000", "1100", "1200", "1300", "1400", "1500"], "line": {"color": "rgb(249, 0, 0)", "width": 3}, "type": "scatter"}], {"showlegend": true, "title": "Pipes Plot", "plot_bgcolor": "rgb(230, 230,230)", "xaxis": {"titlefont": {"color": "red", "family": "Courier New, monospace", "size": 14}, "title": "Bitstring length (n)"}, "yaxis": {"titlefont": {"color": "red", "family": "Courier New, monospace", "size": 14}, "title": "Time Measurement (ms)"}}, {"linkText": "Export to plot.ly", "showLink": true})});</script>
 </div>
 
 </div>
@@ -11984,25 +12083,52 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Benchmark-4:-Stress-Testing-Effect-Calls">Benchmark 4: Stress Testing Effect Calls<a class="anchor-link" href="#Benchmark-4:-Stress-Testing-Effect-Calls">&#182;</a></h2>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;STRESS.csv&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Build a dataframe from obtained data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;STRESS.csv&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])</span>
 
-
+<span class="c1"># Build plot lines from each dataframe</span>
 <span class="n">trace1</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
-                    <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="c1"># Data</span>
-                    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Measurements (ms)&#39;</span><span class="p">,</span> <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;rgb(249, 0, 0)&#39;</span><span class="p">),</span>
-        <span class="n">width</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># Additional options</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span> 
+                    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;OCaml Multicore - Effects&#39;</span><span class="p">,</span> 
+                    <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                        <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;rgb(249, 0, 0)&#39;</span><span class="p">),</span>
+                        <span class="n">width</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> 
                    <span class="p">)</span>
 
-
+<span class="c1"># Build the plot layout with legends etc.</span>
 <span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Stress Testing Plot&#39;</span><span class="p">,</span>
-                   <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s1">&#39;rgb(230, 230,230)&#39;</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                   <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s1">&#39;rgb(230, 230,230)&#39;</span><span class="p">,</span>
+                   <span class="n">showlegend</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;# Calls (n)&#39;</span><span class="p">,</span>
+        <span class="n">titlefont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">family</span><span class="o">=</span><span class="s1">&#39;Courier New, monospace&#39;</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+        <span class="p">),</span>
+    <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Time Measurement (ms)&#39;</span><span class="p">,</span>
+        <span class="n">titlefont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">family</span><span class="o">=</span><span class="s1">&#39;Courier New, monospace&#39;</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">trace1</span><span class="p">],</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
 
@@ -12025,7 +12151,7 @@ div#notebook {
 
 
 <div class="output_html rendered_html output_subarea ">
-<div id="3cb952b3-6f42-4ecf-b9fc-5d34efa643fe" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("3cb952b3-6f42-4ecf-b9fc-5d34efa643fe", [{"name": "Measurements (ms)", "mode": "lines", "y": ["x", "0.005900", "10.997400", "18.564200", "30.765500", "39.214600", "48.514400", "57.652500", "67.892700", "75.071400", "85.200500", "100.019300", "105.149300", "113.910400", "124.739500", "130.118500", "145.620700", "162.625400", "161.747500", "174.638700", "185.190200", "192.696200", "213.312200", "219.051700", "223.936000", "228.579300", "248.680900", "243.781200", "246.236900", "258.611300", "267.277700", "273.042900"], "x": ["n", "0", "1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000", "11000", "12000", "13000", "14000", "15000", "16000", "17000", "18000", "19000", "20000", "21000", "22000", "23000", "24000", "25000", "26000", "27000", "28000", "29000", "30000"], "line": {"color": "rgb(249, 0, 0)", "width": 3}, "type": "scatter"}], {"showlegend": true, "plot_bgcolor": "rgb(230, 230,230)", "title": "Stress Testing Plot"}, {"linkText": "Export to plot.ly", "showLink": true})});</script>
+<div id="b4366139-7652-4f59-930c-15381aa20b30" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("b4366139-7652-4f59-930c-15381aa20b30", [{"name": "OCaml Multicore - Effects", "mode": "lines", "y": ["x", "0.005900", "10.997400", "18.564200", "30.765500", "39.214600", "48.514400", "57.652500", "67.892700", "75.071400", "85.200500", "100.019300", "105.149300", "113.910400", "124.739500", "130.118500", "145.620700", "162.625400", "161.747500", "174.638700", "185.190200", "192.696200", "213.312200", "219.051700", "223.936000", "228.579300", "248.680900", "243.781200", "246.236900", "258.611300", "267.277700", "273.042900"], "x": ["n", "0", "1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000", "11000", "12000", "13000", "14000", "15000", "16000", "17000", "18000", "19000", "20000", "21000", "22000", "23000", "24000", "25000", "26000", "27000", "28000", "29000", "30000"], "line": {"color": "rgb(249, 0, 0)", "width": 3}, "type": "scatter"}], {"showlegend": true, "title": "Stress Testing Plot", "plot_bgcolor": "rgb(230, 230,230)", "xaxis": {"titlefont": {"color": "red", "family": "Courier New, monospace", "size": 14}, "title": "# Calls (n)"}, "yaxis": {"titlefont": {"color": "red", "family": "Courier New, monospace", "size": 14}, "title": "Time Measurement (ms)"}}, {"linkText": "Export to plot.ly", "showLink": true})});</script>
 </div>
 
 </div>
