@@ -54,8 +54,8 @@ let (||) x y =
   else false
 
 let (&&) x y =
-  if x = true then
-    if y = true then true
+  if x then
+    if y then true
     else false
   else false
 

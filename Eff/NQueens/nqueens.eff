@@ -4,7 +4,6 @@ effect Select : unit -> bool
 let rec noAttack (i,j) = function
   | [] -> true
   | (k,l)::xs -> i <> k && j <> l && abs (i - k) <> abs (j - l) && noAttack (i,j) xs
-;;
 
 let available n x qs =
   let rec checker acc y =
@@ -13,12 +12,10 @@ let available n x qs =
     else checker acc (y - 1)
   in
   checker [] n
-;;
 
 let rec choose = function
   | []    -> #Fail ()
   | x::xs -> if #Select () then x else choose xs
-;;
 
 (* NQUEENS *)
 let rec queens n =
@@ -27,15 +24,11 @@ let rec queens n =
     let next = choose (available n x qns) in
     put_queen (x + 1) ((x,next)::qns)
   in put_queen 1 []
-;;
-
-let selector = handler
-  | val x         -> [x]
-  | #Select _ k -> k true @ k false
-  | #Fail _ k   -> []
-;;
 
 (* SOLVER / HANDLER *)
-let solve n =
-  (with selector handle (queens n))
-;;
+let selector = handler
+  | val x       -> [x]
+  | #Select _ k -> k true @ k false
+  | #Fail _ k   -> []
+
+let solve n = with selector handle queens n
