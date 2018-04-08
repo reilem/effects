@@ -11,9 +11,10 @@
 *.out
 *.o
 *.cmx
-OCaml-multicore/out/*.txt
-OCaml-multicore/out/*.csv
+OCaml-multicore/_out/
 OCaml-multicore/run
+OCaml/_out/
+OCaml/run
 
 # Eff git ignores
 # -----------------

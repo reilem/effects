@@ -10,7 +10,7 @@ set -e
 # Make main make function
 make() {
   # Define output folder
-  OUT="out"
+  OUT="_out"
   # Check if existing dir with same name.
   if ! [ -d $OUT ]; then
     # If no dir exists check if file with same name exists.
@@ -34,14 +34,15 @@ make() {
   ocamlopt -c StressTest/stresstest.ml
   ocamlopt -c Pipes/pipes.ml
   ocamlopt -c Parser/parser.ml
+  ocamlopt -c TreeAlgorithm/fringe.ml
   # Compile the timer
   ocamlopt -c -I Generator -I NQueens -I Memoization \
-  -I StressTest -I Pipes -I Parser Timer/timer.ml
+  -I StressTest -I Pipes -I Parser -I TreeAlgorithm Timer/timer.ml
 
   # Make executable
   ocamlopt -o run Generator/generator.cmx NQueens/nqueens.cmx \
   Memoization/fibonacci.cmx StressTest/stresstest.cmx Pipes/pipes.cmx \
-  Parser/parser.cmx Timer/timer.cmx
+  Parser/parser.cmx TreeAlgorithm/fringe.cmx Timer/timer.cmx
 
   # Output message
   echo "# Compiled succesfully."
@@ -54,11 +55,12 @@ make() {
   echo "#   All other values to be given as integer values."
   echo "#   Default value of 1 will be used for unpassed parameters."
   echo "# Working function list:"
-  echo "# NQ"
-  echo "# PRS"
-  echo "# PIPES"
-  echo "# FIB"
-  echo "# STRESS"
+  echo "# NQ (nqueens)"
+  echo "# FIB (fibonacci)"
+  echo "# PRS (parser)"
+  echo "# PIP (pipes)"
+  echo "# FRNG (fringe)"
+  echo "# STRS (stress loop)"
 }
 # Run main make function
 make

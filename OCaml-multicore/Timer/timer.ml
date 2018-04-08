@@ -7,6 +7,7 @@ open Nqueens
 open Parser
 open Pipes
 open Fibonacci
+open Fringe
 open Stresstest
 
 module Evaluator : sig
@@ -26,24 +27,23 @@ struct
     calc_average_time 0.0 m
 
   let evaluateF func strt up avg stp =
-    let output_file =  "out/" ^ func ^ ".csv" in
+    let output_file =  "_out/" ^ func ^ ".csv" in
     let ary = init (((up - strt) / stp) + 1) (fun i -> strt + (stp * i)) in
     let evaluate solver gen =
       let oc = open_out output_file in
         fprintf oc "n,x\n";
         iter (fun n -> fprintf oc "%d,%f\n" n (timer solver (gen n) avg)) ary;
       close_out oc;
-      printf "Results output to: %s\n" output_file;
+      printf "Results printed to: %s\n" output_file;
     in
     match func with
-    | "NQ"     -> evaluate NQueens.solve Generator.nqueens
-    | "PRS"    -> evaluate Parser.solve Generator.parse
-    | "PIPES"   -> evaluate Pipes.solve Generator.pipes
-    | "FIB"    -> evaluate Fibonacci.solve Generator.fibo
-    | "STRESS" -> evaluate Loop.solve Generator.stress
-    | _        -> printf "Invalid function name given\n"
-    (* | "RR" -> evaluate NQueens.solve Generator.rr
-    | "TREE" -> evaluate NQueens.solve Generator.tree *)
+    | "NQ"   -> evaluate NQueens.solve Generator.nqueens
+    | "PRS"  -> evaluate Parser.solve Generator.parse
+    | "PIP"  -> evaluate Pipes.solve Generator.pipes
+    | "FIB"  -> evaluate Fibonacci.solve Generator.fibo
+    | "STRS" -> evaluate Loop.solve Generator.stress
+    | "FRNG" -> failwith "Generator not implemented"
+    | _      -> failwith "Invalid function name given"
 end
 
 let getInt n = int_of_string argv.(n)
@@ -58,4 +58,4 @@ let _ =
     Evaluator.evaluateF argv.(1) (getInt 2) (getInt 3) (getInt 4) 1
   | 6 ->
     Evaluator.evaluateF argv.(1) (getInt 2) (getInt 3) (getInt 4) (getInt 5)
-  | _ -> ()
+  | _ -> failwith "Invalid argument count"
