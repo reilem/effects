@@ -5,23 +5,17 @@ struct
   effect Fail   : int
   effect Select : bool
 
-  let no_attack (x, y) (x', y') =
-    x <> x' && y <> y' && abs (x - x') <> abs (y - y')
-
-  let rec not_attacked x' = function
+  let rec noAttack (i,j) = function
     | [] -> true
-    | x :: xs -> if no_attack x' x then not_attacked x' xs else false
+    | (k,l)::xs -> i <> k && j <> l && abs (i - k) <> abs (j - l) && noAttack (i,j) xs
 
-  let available (number_of_queens, x, qs) =
-    let rec loop (possible, y) =
-      if y < 1 then
-        possible
-      else if not_attacked (x, y) qs then
-        loop ((y :: possible), (y - 1))
-      else
-        loop (possible, (y - 1))
+  let available n x qs =
+    let rec check acc y =
+      if y == 0 then acc
+      else if noAttack (x, y) qs then check (y::acc) (y - 1)
+      else check acc (y - 1)
     in
-    loop ([], number_of_queens)
+    check [] n
 
   let rec choose = function
     | []    -> perform Fail
@@ -30,10 +24,10 @@ struct
   (* NQUEENS *)
   let rec queens n =
     let rec put_queen x qns =
-      if x > n then qns else
-      let next = choose (available x n qns) in
-      put_queen (x + 1) ((x,next)::qns)
-    in put_queen 1 []
+      if x == 0 then qns else
+      let next = choose @@ available n x qns in
+      put_queen (x - 1) ((x,next)::qns)
+    in put_queen n []
 
   (* SOLVER / HANDLER *)
   let solve n =

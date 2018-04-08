@@ -19,11 +19,8 @@ struct
   let solve n =
     let handler =
       match fibo_mem n with
-      | effect (Get n) k ->
-        (fun s -> continue k (find n s) s)
-      | effect (Put tup) k ->
-        (fun s -> continue k () (tup::s))
-      | x ->
-        (fun s -> x)
+      | effect (Get n) k    -> (fun s -> continue k (find n s) s)
+      | effect (Put tup) k  -> (fun s -> continue k () (tup::s))
+      | x                   -> (fun s -> x)
     in handler []
 end
