@@ -1,11 +1,10 @@
-open Printf
-
 module Parser : sig
   (* Takes a string and parses it *)
-  val solve : string -> bool list
+  val solve : string -> bool
 end =
 struct
   exception Unrecognized_Symbol
+  exception Parse_Error
 
   effect True : unit
   effect False : unit
@@ -14,6 +13,36 @@ struct
   effect Not: unit
   effect L_Br: unit
   effect R_Br: unit
+
+  type 'a state =
+    | Done of bool list
+    | Resume of bool list * (unit, 'a state -> 'a state) continuation
+
+  let error () = raise Parse_Error
+
+  let empty = Done []
+
+  let append k b = function
+    | Done s -> continue k () (Done (b::s))
+    | _      -> error ()
+
+  let resume k = function
+    | Done s -> Resume (s, k)
+    | _      -> error ()
+
+  let binary_operation k f = function
+    | Done [x] -> (match continue k () empty with
+      | Done [y]        -> Done [f x y]
+      | Resume ([y],k') -> continue k' () @@ Done [f x y]
+      | _               -> error ())
+    | _        -> error ()
+
+  let unary_operation k f = function
+    | Done [] -> (match continue k () empty with
+      | Done [x]        -> Done [f x]
+      | Resume ([x],k') -> continue k' () @@ Done [f x]
+      | _               -> error ())
+    | _       -> error ()
 
   let explode s =
     let rec expl i l =
@@ -27,8 +56,8 @@ struct
     | 'A'::'N'::'D'::xs -> perform And; parse xs
     | 'O'::'R'::xs      -> perform Or; parse xs
     | 'N'::'O'::'T'::xs -> perform Not; parse xs
-    (* | '('::xs           -> perform L_Br; parse xs
-    | ')'::xs           -> perform R_Br; parse xs *)
+    | '('::xs           -> perform L_Br; parse xs
+    | ')'::xs           -> perform R_Br; parse xs
     | ' '::xs           -> parse xs
     | []                -> false
     | v::xs             -> raise Unrecognized_Symbol
@@ -36,26 +65,16 @@ struct
   let solve str =
     let solver =
       match parse @@ explode str with
-      | effect And k   -> printf "And\n"; (function
-        | [x]   -> (match continue k () [] with | [y] -> [x && y] | _ -> [])
-        | _      -> [])
-      | effect Or k    -> printf "Or\n"; (function
-        | [x]   -> (match continue k () [] with | [y] -> [x || y] | _ -> [])
-        | _      -> [])
-      | effect Not k   -> printf "Not\n"; (fun _ -> match continue k () [] with
-        | [y] -> [not y]
-        | _   -> []
-      )
-      (* | effect L_Br k  -> printf "L\n"; (fun s -> continue k () [])
-      | effect R_Br k  -> printf "R\n"; (fun s -> s) *)
-      | effect True k  -> printf "True\n"; (fun s -> continue k () (true::s))
-      | effect False k -> printf "False\n"; (fun s -> continue k () (false::s))
-      | x              -> printf "End\n"; (fun s -> s)
-    in solver []
+      | effect And k   -> binary_operation k (&&)
+      | effect Or k    -> binary_operation k (||)
+      | effect Not k   -> unary_operation  k (not)
+      | effect L_Br k  -> (fun s -> continue k () empty)
+      | effect R_Br k  -> resume k
+      | effect True k  -> append k true
+      | effect False k -> append k false
+      | x              -> (fun s -> s)
+    in
+    match solver empty with
+    | Done [x] -> x
+    | _        -> false
 end
-
-let _ = Parser.solve "NOT 1 OR 1"
-
-(*
-#use "parser.ml";;
-*)
