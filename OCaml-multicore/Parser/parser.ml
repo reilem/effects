@@ -44,11 +44,10 @@ struct
       | _               -> error ())
     | _       -> error ()
 
-  let explode s =
-    let rec expl i l =
-      if i < 0 then l else
-      expl (i - 1) (s.[i] :: l) in
-    expl (String.length s - 1) []
+  let str_to_char_list s =
+    let rec to_list i l =
+      if i < 0 then l else to_list (i - 1) (s.[i] :: l) in
+    to_list (String.length s - 1) []
 
   let rec parse = function
     | '1'::xs           -> perform True; parse xs
@@ -64,7 +63,7 @@ struct
 
   let solve str =
     let solver =
-      match parse @@ explode str with
+      match parse @@ str_to_char_list str with
       | effect And k   -> binary_operation k (&&)
       | effect Or k    -> binary_operation k (||)
       | effect Not k   -> unary_operation  k (not)
