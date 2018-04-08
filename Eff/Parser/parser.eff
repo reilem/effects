@@ -1,0 +1,77 @@
+effect True : unit -> unit
+effect False : unit -> unit
+effect And : unit -> unit
+effect Or : unit -> unit
+effect Not : unit -> unit
+effect L_Br : unit -> unit
+effect R_Br : unit -> unit
+
+type 'a state =
+  | State of bool list
+  | Resume of bool list * (unit -> 'a state -> a' state)
+
+let error () = failwith "Parse error"
+
+let empty = State []
+
+let append k b = function
+  | State s -> k () (State (b::s))
+  | _      -> error ()
+
+let resume k = function
+  | State s -> Resume (s, k)
+  | _      -> error ()
+
+let binary_operation k f = function
+  | State [x] -> (match k () empty with
+    | State [y]        -> State [f x y]
+    | Resume ([y],k') -> k' () (State [f x y])
+    | _               -> error ())
+  | _        -> error ()
+
+let unary_operation k f = function
+  | State [] -> (match k () empty with
+    | State [x]        -> State [f x]
+    | Resume ([x],k') -> k' () (State [f x])
+    | _               -> error ())
+  | _       -> error ()
+
+let rec parse = function
+  | "1"::xs   -> #True (); parse xs
+  | "0"::xs   -> #False (); parse xs
+  | "AND"::xs -> #And (); parse xs
+  | "OR"::xs  -> #Or (); parse xs
+  | "NOT"::xs -> #Not (); parse xs
+  | "("::xs   -> #L_Br (); parse xs
+  | ")"::xs   -> #R_Br (); parse xs
+  | " "::xs   -> parse xs
+  | []        -> false
+  | v::xs     -> failwith "Unrecognized symbol"
+
+let (||) x y =
+  if x then true
+  else if y then true
+  else false
+
+let (&&) x y =
+  if x = true then
+    if y = true then true
+    else false
+  else false
+
+let parse_handler = handler
+  | val x      -> (fun s -> s)
+  | #And _ k   -> binary_operation k (&&)
+  | #Or _ k    -> binary_operation k (||)
+  | #Not _ k   -> unary_operation  k (not)
+  | #L_Br _ k  -> (fun s -> k () empty)
+  | #R_Br _ k  -> resume k
+  | #True _ k  -> append k true
+  | #False _ k -> append k false
+
+
+let solve str_list =
+  let solver = with parse_handler handle parse str_list in
+  match solver empty with
+  | State [x] -> x
+  | _        -> false
