@@ -15,32 +15,32 @@ struct
   effect R_Br: unit
 
   type 'a state =
-    | Done of bool list
+    | State of bool list
     | Resume of bool list * (unit, 'a state -> 'a state) continuation
 
   let error () = raise Parse_Error
 
-  let empty = Done []
+  let empty = State []
 
   let append k b = function
-    | Done s -> continue k () (Done (b::s))
+    | State s -> continue k () (State (b::s))
     | _      -> error ()
 
   let resume k = function
-    | Done s -> Resume (s, k)
+    | State s -> Resume (s, k)
     | _      -> error ()
 
   let binary_operation k f = function
-    | Done [x] -> (match continue k () empty with
-      | Done [y]        -> Done [f x y]
-      | Resume ([y],k') -> continue k' () @@ Done [f x y]
+    | State [x] -> (match continue k () empty with
+      | State [y]        -> State [f x y]
+      | Resume ([y],k') -> continue k' () @@ State [f x y]
       | _               -> error ())
     | _        -> error ()
 
   let unary_operation k f = function
-    | Done [] -> (match continue k () empty with
-      | Done [x]        -> Done [f x]
-      | Resume ([x],k') -> continue k' () @@ Done [f x]
+    | State [] -> (match continue k () empty with
+      | State [x]        -> State [f x]
+      | Resume ([x],k') -> continue k' () @@ State [f x]
       | _               -> error ())
     | _       -> error ()
 
@@ -74,6 +74,6 @@ struct
       | x              -> (fun s -> s)
     in
     match solver empty with
-    | Done [x] -> x
+    | State [x] -> x
     | _        -> false
 end
