@@ -34,25 +34,18 @@ struct
     | v::xs             -> raise Unrecognized_Symbol
 
   let solve str =
-    let s = ref [] in
     let solver =
       match parse @@ explode str with
-      | effect And k   -> (fun s ->
-        printf "And\n";
-        match s with
+      | effect And k   -> printf "And\n"; (function
         | [x]   -> (match continue k () [] with | [y] -> [x && y] | _ -> [])
         | _      -> [])
-      | effect Or k    -> (fun s ->
-        printf "Or\n";
-        match s with
+      | effect Or k    -> printf "Or\n"; (function
         | [x]   -> (match continue k () [] with | [y] -> [x || y] | _ -> [])
         | _      -> [])
-      | effect Not k   -> (fun s ->
-        printf "Not\n";
-        match continue k () [] with
+      | effect Not k   -> printf "Not\n"; (fun _ -> match continue k () [] with
         | [y] -> [not y]
         | _   -> []
-        )
+      )
       (* | effect L_Br k  -> printf "L\n"; (fun s -> continue k () [])
       | effect R_Br k  -> printf "R\n"; (fun s -> s) *)
       | effect True k  -> printf "True\n"; (fun s -> continue k () (true::s))
