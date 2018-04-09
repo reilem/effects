@@ -5,21 +5,13 @@ end =
 struct
   effect Check : int list -> unit
 
-  let rec reverse lst =
-    let rec rev acc = function
-      | []    -> acc
-      | x::xs -> rev (x::acc) xs
-    in rev [] lst
-
-  let rec length = function
-    | []    -> 0
-    | _::xs -> 1 + length xs
-
+  let reverse lst = let rec rev acc = function | [] -> acc | x::xs -> rev (x::acc) xs in rev [] lst
+  let length lst = let rec len acc = function | [] -> acc | _::xs -> len (acc + 1) xs in len 0 lst
   let negate = function | 0 -> -1 | n -> n
 
   let rec find_subarray = function
   | []  -> []
-  | x::xs -> perform (Check (x::xs)); find_subarray @@ xs
+  | x::xs -> perform (Check (x::xs)); find_subarray xs
 
   let solve (lst : int list) =
     try find_subarray lst with
