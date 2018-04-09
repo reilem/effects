@@ -24,25 +24,25 @@ struct
 
   let append k b = function
     | State s -> continue k () (State (b::s))
-    | _      -> error ()
+    | _       -> error ()
 
   let resume k = function
     | State s -> Resume (s, k)
-    | _      -> error ()
+    | _       -> error ()
 
   let binary_operation k f = function
     | State [x] -> (match continue k () empty with
-      | State [y]        -> State [f x y]
+      | State [y]       -> State [f x y]
       | Resume ([y],k') -> continue k' () @@ State [f x y]
       | _               -> error ())
-    | _        -> error ()
+    | _         -> error ()
 
   let unary_operation k f = function
     | State [] -> (match continue k () empty with
-      | State [x]        -> State [f x]
+      | State [x]       -> State [f x]
       | Resume ([x],k') -> continue k' () @@ State [f x]
       | _               -> error ())
-    | _       -> error ()
+    | _        -> error ()
 
   let str_to_char_list s =
     let rec to_list i l =
@@ -75,5 +75,5 @@ struct
     in
     match solver empty with
     | State [x] -> x
-    | _        -> false
+    | _         -> false
 end

@@ -6,7 +6,7 @@ struct
   effect Select : bool
 
   let rec noAttack (i,j) = function
-    | [] -> true
+    | []        -> true
     | (k,l)::xs -> i <> k && j <> l && abs (i - k) <> abs (j - l) && noAttack (i,j) xs
 
   let available n x qs =

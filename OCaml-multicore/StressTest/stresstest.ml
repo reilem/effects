@@ -1,20 +1,16 @@
-effect E : bool
-
 module Loop : sig
   val solve : int -> unit
 end =
 struct
-  let rec loop () =
-    if perform E then loop ()
-    else ()
+  effect Check : bool
+
+  let rec loop () = if perform E then loop () else ()
 
   let solve n =
     let handler =
       match loop () with
-      | effect E k -> (fun s -> let next = s + 1 in
-          if next < n then continue k true next
-          else continue k false next)
-      | x -> (fun s -> x)
+      | effect Check k -> (fun s -> if s < n then continue k true (s + 1) else continue k false s)
+      | x              -> (fun s -> x)
     in
     handler 0
 end
