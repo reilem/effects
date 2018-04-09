@@ -12,11 +12,11 @@ struct
     | Done
     | Waiting of int * (unit, 'a state) continuation
 
-  let rec step = function
-    | Leaf v       -> perform (Wait v)
-    | Node (t1,t2) -> step t1; step t2
-
   let walk t =
+    let rec step = function
+      | Leaf v       -> perform (Wait v)
+      | Node (t1,t2) -> step t1; step t2
+    in
     match step t with
     | effect (Wait v) k -> Waiting (v,k)
     | _                 -> Done
