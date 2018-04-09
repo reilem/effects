@@ -71,7 +71,7 @@ struct
       | effect R_Br k  -> resume k
       | effect True k  -> append k true
       | effect False k -> append k false
-      | x              -> (fun s -> s)
+      | _              -> (fun s -> s)
     in
     match solver empty with
     | State [x] -> x
