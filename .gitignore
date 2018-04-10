@@ -12,12 +12,14 @@
 *.o
 *.cmx
 OCaml-multicore/_out/
-OCaml-multicore/run
+OCaml-multicore/run_timer
 OCaml/_out/
-OCaml/run
+OCaml/run_timer
 
 # Eff git ignores
 # -----------------
 
 # Links git ignores
 # -----------------
+
+

@@ -96,6 +96,8 @@ struct
       NOT (analyse exp)
     | TRUE_T::rest  -> TRUE
     | FALSE_T::rest -> FALSE
+    | RIGHT_T::rest -> analyse rest
+    | LEFT_T::rest  -> analyse rest
     | _             -> raise Lexical_Error
 
   let rec tokenize (acc: token list) (clist : char list) : token list =
