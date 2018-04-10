@@ -10,7 +10,7 @@ set -e
 # Make main make function
 make() {
   # Define output folder
-  OUT="out"
+  OUT="_out"
   # Check if existing dir with same name.
   if ! [ -d $OUT ]; then
     # If no dir exists check if file with same name exists.
@@ -31,12 +31,17 @@ make() {
   # Compile the problem solvers
   ocamlopt -c NQueens/nqueens.ml
   ocamlopt -c Memoization/fibonacci.ml
+  ocamlopt -c Pipes/pipes.ml
+  ocamlopt -c Parser/parser.ml
+  ocamlopt -c TreeAlgorithm/fringe.ml
   # Compile the timer
-  ocamlopt -c -I Generator -I NQueens -I Memoization Timer/timer.ml
+  ocamlopt -c -I Generator -I NQueens -I Memoization \
+  -I Pipes -I Parser -I TreeAlgorithm Timer/timer.ml
 
   # Make executable
   ocamlopt -o run Generator/generator.cmx NQueens/nqueens.cmx \
-  Memoization/fibonacci.cmx Timer/timer.cmx
+  Memoization/fibonacci.cmx Pipes/pipes.cmx \
+  Parser/parser.cmx TreeAlgorithm/fringe.cmx Timer/timer.cmx
 
   # Output message
   echo "# Compiled succesfully."
@@ -49,8 +54,11 @@ make() {
   echo "#   All other values to be given as integer values."
   echo "#   Default value of 1 will be used for unpassed parameters."
   echo "# Working function list:"
-  echo "# NQ"
-  echo "# FIB"
+  echo "# NQ (nqueens)"
+  echo "# FIB (fibonacci)"
+  echo "# PRS (parser)"
+  echo "# PIP (pipes)"
+  echo "# FRNG (fringe)"
 }
 # Run main make function
 make
