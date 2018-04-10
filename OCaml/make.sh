@@ -26,22 +26,22 @@ make() {
     fi
   fi
 
-  # Compile the generator
-  ocamlopt -c Generator/generator.ml
   # Compile the problem solvers
   ocamlopt -c NQueens/nqueens.ml
   ocamlopt -c Memoization/fibonacci.ml
   ocamlopt -c Pipes/pipes.ml
   ocamlopt -c Parser/parser.ml
   ocamlopt -c TreeAlgorithm/fringe.ml
+  # Compile the generator
+  ocamlopt -c -I TreeAlgorithm Generator/generator.ml
   # Compile the timer
   ocamlopt -c -I Generator -I NQueens -I Memoization \
   -I Pipes -I Parser -I TreeAlgorithm Timer/timer.ml
 
   # Make executable
-  ocamlopt -o run Generator/generator.cmx NQueens/nqueens.cmx \
-  Memoization/fibonacci.cmx Pipes/pipes.cmx \
-  Parser/parser.cmx TreeAlgorithm/fringe.cmx Timer/timer.cmx
+  ocamlopt -o run NQueens/nqueens.cmx Memoization/fibonacci.cmx \
+  Pipes/pipes.cmx Parser/parser.cmx TreeAlgorithm/fringe.cmx \
+  Generator/generator.cmx Timer/timer.cmx
 
   # Output message
   echo "# Compiled succesfully."

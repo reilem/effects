@@ -40,7 +40,7 @@ struct
     | "PRS"  -> evaluate Parser.solve Generator.parse
     | "PIP"  -> evaluate Pipes.solve Generator.pipes
     | "FIB"  -> evaluate Fibonacci.solve Generator.fibo
-    | "FRNG" -> failwith "Generator not implemented"
+    | "FRNG" -> evaluate Fringe.solve Generator.fringe
     | _      -> failwith "Invalid function name given"
 end
 
