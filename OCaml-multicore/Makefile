@@ -8,6 +8,7 @@ test:
 	./run_timer FIB 500 10
 	./run_timer PIP 250 10
 	./run_timer FRNG 15 10
+	./run_timer STRS 1000000 10
 
 clean:
 	rm -f run_timer

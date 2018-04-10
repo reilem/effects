@@ -1,6 +1,13 @@
 set -e
+# INSTRUCTIONS:
+# Give execution permission to this script:
+# $ chmod +x make.sh
+# Run this script:
+# $ ./make.sh
+# Run the executable:
+# $ ./run
 
-# Builder function
+# Build function
 build() {
   # Define output folder
   OUT="_out"
@@ -32,12 +39,12 @@ build() {
   -I Pipes -I Parser -I TreeAlgorithm Timer/timer.ml
 
   # Make executable
-  ocamlopt -o run_timer NQueens/nqueens.cmx Memoization/fibonacci.cmx \
-  Pipes/pipes.cmx Parser/parser.cmx TreeAlgorithm/fringe.cmx \
-  Generator/generator.cmx Timer/timer.cmx
+  ocamlopt -o run_timer Generator/generator.cmx NQueens/nqueens.cmx \
+  Memoization/fibonacci.cmx Pipes/pipes.cmx \
+  Parser/parser.cmx TreeAlgorithm/fringe.cmx Timer/timer.cmx
 
   # Output message
-  echo "# Compiled succesfully."
+  echo "# Build successful"
   echo "# Commands to run tests:"
   echo "# $ ./run_timer [FUNCTION] [UPPER_LIMIT]"
   echo "# $ ./run_timer [FUNCTION] [UPPER_LIMIT] [AVERAGE_RUNS]"
@@ -53,5 +60,10 @@ build() {
   echo "# PIP (pipes)"
   echo "# FRNG (fringe)"
 }
+# Switch to multicore opam and configure
+echo "# Switching to multicore compiler"
+opam switch 4.05.0 >/dev/null
+eval `opam config env`
+echo "# Building..."
 # Run main build function
 build

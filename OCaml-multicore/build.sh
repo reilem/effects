@@ -7,7 +7,7 @@ set -e
 # Run the executable:
 # $ ./run
 
-# Make main make function
+# Build function
 build() {
   # Define output folder
   OUT="_out"
@@ -26,8 +26,6 @@ build() {
     fi
   fi
 
-  # Compile the generator
-  ocamlopt -c Generator/generator.ml
   # Compile the problem solvers
   ocamlopt -c NQueens/nqueens.ml
   ocamlopt -c Memoization/fibonacci.ml
@@ -35,6 +33,8 @@ build() {
   ocamlopt -c Pipes/pipes.ml
   ocamlopt -c Parser/parser.ml
   ocamlopt -c TreeAlgorithm/fringe.ml
+  # Compile the generator
+  ocamlopt -c -I TreeAlgorithm Generator/generator.ml
   # Compile the timer
   ocamlopt -c -I Generator -I NQueens -I Memoization \
   -I StressTest -I Pipes -I Parser -I TreeAlgorithm Timer/timer.ml
@@ -45,7 +45,7 @@ build() {
   Parser/parser.cmx TreeAlgorithm/fringe.cmx Timer/timer.cmx
 
   # Output message
-  echo "# Compiled succesfully."
+  echo "# Build successful"
   echo "# Commands to run tests:"
   echo "# $ ./run_timer [FUNCTION] [UPPER_LIMIT]"
   echo "# $ ./run_timer [FUNCTION] [UPPER_LIMIT] [AVERAGE_RUNS]"
@@ -62,5 +62,10 @@ build() {
   echo "# FRNG (fringe)"
   echo "# STRS (stress loop)"
 }
-# Run main make function
+# Switch to multicore opam and configure
+echo "# Switching to multicore compiler"
+opam switch 4.02.2+multicore >/dev/null
+eval `opam config env`
+echo "# Building..."
+# Run main build function
 build

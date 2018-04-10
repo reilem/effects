@@ -4,7 +4,7 @@ end =
 struct
   effect Check : bool
 
-  let rec loop () = if perform E then loop () else ()
+  let rec loop () = if perform Check then loop () else ()
 
   let solve n =
     let handler =

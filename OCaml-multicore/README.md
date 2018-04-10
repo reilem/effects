@@ -23,8 +23,6 @@ $ eval `opam config env`
 
 ## Execution
 
-(Make sure you have run `opam switch 4.02.2+multicore` before continuing)
-
 Our ocaml multicore code can be built either with `make build` or by running the build
 script `build.sh` directly. The output of the
 build will provide details on how to run and execute the produced binary
@@ -33,7 +31,8 @@ with `make test`.
 
 You can also run the `.ml` files individually by running the
 `ocaml` command directly in your terminal (or with ledit `ledit ocaml`) and then
-loading in files individually with `#use "file.ml"`.
+loading in files individually with `#use "file.ml"`. Make sure you have run
+`opam switch 4.02.2+multicore` before attempting to run files individually.
 
 Once the program is loaded, all functions inside the program can be freely
 executed.

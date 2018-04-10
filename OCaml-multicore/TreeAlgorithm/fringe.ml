@@ -3,7 +3,7 @@ type tree =
   | Node of tree * tree
 
 module Fringe : sig
-  val solve: tree -> tree -> bool
+  val solve: tree * tree -> bool
 end =
 struct
   effect Wait : int -> unit
@@ -21,7 +21,7 @@ struct
     | effect (Wait v) k -> Waiting (v,k)
     | _                 -> Done
 
-  let solve t1 t2 =
+  let solve (t1,t2) =
     let stepper t = (fun () -> step t) in
     let resume k = (fun () -> continue k ()) in
     let rec fringe l r =
