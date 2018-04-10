@@ -61,7 +61,7 @@ build() {
   echo "# FRNG (fringe)"
 }
 # Switch to multicore opam and configure
-echo "# Switching to multicore compiler"
+echo "# Switching to standard OCaml compiler"
 opam switch 4.05.0 >/dev/null
 eval `opam config env`
 echo "# Building..."

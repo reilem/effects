@@ -8,12 +8,12 @@ open Parser
 open Pipes
 open Fibonacci
 open Fringe
+open Stresstest
 
 module Evaluator : sig
   val evaluateF : string -> int -> int -> int -> int -> unit
 end =
 struct
-
   let timer f gen n m =
     let rec calc_average_time sum = function
     | 0 -> sum /. (float m)
@@ -27,8 +27,6 @@ struct
     calc_average_time 0.0 m
 
   let evaluateF func strt up avg stp =
-    printf "Running %s time tests for values from %d to %d, in steps of %d.\n" func strt up stp;
-    printf "Each test is run an average of %d times.\n" avg;
     let output_file =  "_out/" ^ func ^ ".csv" in
     let ary = init (((up - strt) / stp) + 1) (fun i -> strt + (stp * i)) in
     let evaluate solver gen =
@@ -44,6 +42,7 @@ struct
     | "PIP"  -> evaluate Pipes.solve Generator.pipes
     | "FIB"  -> evaluate Fibonacci.solve Generator.fibo
     | "FRNG" -> evaluate Fringe.solve Generator.fringe
+    | "STRS" -> evaluate Loop.solve Generator.stress
     | _      -> failwith "Invalid function name given"
 end
 
