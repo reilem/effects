@@ -10,10 +10,9 @@
 ## Execution
 
 Our ocaml code can be built either with `make build` or by running the build
-script `build.sh` directly. (Make sure to give execution permissions to the
-`build.sh` script with `chmod +x make.sh` before running). The output of the
-make script will provide details on how to run and execute the produced binary
-for running individual tests. Alternatively you can run the full test suite
+script `build.sh` directly. The output of the
+build will provide details on how to run and execute the produced binary
+for running individual tests. Alternatively you can run all the standard tests
 with `make test`.
 
 You can also run the `.ml` files individually by running the

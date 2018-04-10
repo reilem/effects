@@ -8,7 +8,7 @@ set -e
 # $ ./run
 
 # Make main make function
-make() {
+build() {
   # Define output folder
   OUT="_out"
   # Check if existing dir with same name.
@@ -40,17 +40,17 @@ make() {
   -I StressTest -I Pipes -I Parser -I TreeAlgorithm Timer/timer.ml
 
   # Make executable
-  ocamlopt -o run Generator/generator.cmx NQueens/nqueens.cmx \
+  ocamlopt -o run_timer Generator/generator.cmx NQueens/nqueens.cmx \
   Memoization/fibonacci.cmx StressTest/stresstest.cmx Pipes/pipes.cmx \
   Parser/parser.cmx TreeAlgorithm/fringe.cmx Timer/timer.cmx
 
   # Output message
   echo "# Compiled succesfully."
   echo "# Commands to run tests:"
-  echo "# $ ./run [FUNCTION] [UPPER_LIMIT]"
-  echo "# $ ./run [FUNCTION] [UPPER_LIMIT] [AVERAGE_RUNS]"
-  echo "# $ ./run [FUNCTION] [LOWER_LIMIT] [UPPER_LIMIT] [AVERAGE_RUNS]"
-  echo "# $ ./run [FUNCTION] [LOWER_LIMIT] [UPPER_LIMIT] [AVERAGE_RUNS] [STEP_SIZE]"
+  echo "# $ ./run_timer [FUNCTION] [UPPER_LIMIT]"
+  echo "# $ ./run_timer [FUNCTION] [UPPER_LIMIT] [AVERAGE_RUNS]"
+  echo "# $ ./run_timer [FUNCTION] [LOWER_LIMIT] [UPPER_LIMIT] [AVERAGE_RUNS]"
+  echo "# $ ./run_timer [FUNCTION] [LOWER_LIMIT] [UPPER_LIMIT] [AVERAGE_RUNS] [STEP_SIZE]"
   echo "#   Use a FUNCTION name from the give list below."
   echo "#   All other values to be given as integer values."
   echo "#   Default value of 1 will be used for unpassed parameters."
@@ -63,4 +63,4 @@ make() {
   echo "# STRS (stress loop)"
 }
 # Run main make function
-make
+build

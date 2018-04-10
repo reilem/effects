@@ -2,28 +2,50 @@
 
 (These instructions have been tried and tested on MacOS and Linux)
 
-## Installation
+## Prerequisites
 
-The install guide script `installguide.sh` contains a guide and all necessary
-commands to install ocaml multicore. It is recommended to run each command
-individually but running the script directly is also an option and should be
-sufficient.
+* An OCaml compiler (http://ocaml.org/docs/install.html)
+* OPam, the OCaml package manager (https://opam.ocaml.org/)
+
+## Multicore Installation
+
+Add multicore from remote repo:
+
+$ opam remote add multicore https://github.com/ocamllabs/multicore-opam.git
+
+Switch to ocaml multicore compiler:
+
+$ opam switch 4.02.2+multicore
+
+Setup new switch in the current shell:
+
+$ eval `opam config env`
 
 ## Execution
 
 (Make sure you have run `opam switch 4.02.2+multicore` before continuing)
 
-Our ocaml multicore code can be built using the `make.sh` script. (Make sure to
-give execution permissions to the `make.sh` script with `chmod +x make.sh`
-before running). The output of the make script will provide details on how to
-run and execute the produced binary.
+Our ocaml multicore code can be built either with `make build` or by running the build
+script `build.sh` directly. The output of the
+build will provide details on how to run and execute the produced binary
+for running individual tests. Alternatively you can run all the standard tests
+with `make test`.
 
-Alternatively you can choose to run `.ml` files individually by running the
-`ocaml` command directly in your terminal and then loading in files individually
-with `#use "file.ml"`.
-
-(Note: it is required to type the `#` symbol in order to get the command working.
-Your terminal input should look something like this: `# #use "mail.eff";;`)
+You can also run the `.ml` files individually by running the
+`ocaml` command directly in your terminal (or with ledit `ledit ocaml`) and then
+loading in files individually with `#use "file.ml"`.
 
 Once the program is loaded, all functions inside the program can be freely
 executed.
+
+## Makefile overview
+
+`make build` - build the executable binary
+
+`make test` - run all tests
+
+`make clean` - clean compile output and binary file
+
+`make clean_results` - clean all results form the output folder
+
+`make clean_all` - performs `make clean` and `make clean_results`
