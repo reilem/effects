@@ -25,8 +25,8 @@ struct
 
   let rec parse n =
     let rand_exp f g n =
-      if n < 40 then "AND " ^ f () ^ " " ^ g ()
-      else if n < 80 then "OR " ^ f () ^ " " ^ g ()
+      if n < 33 then f () ^ " AND " ^ g ()
+      else if n < 66 then f () ^ " OR " ^ g ()
       else "NOT " ^ f ()
     in
     let e = Random.int 99 in
