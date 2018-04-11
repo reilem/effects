@@ -6,6 +6,10 @@ effect Not : unit -> unit
 effect L_Br : unit -> unit
 effect R_Br : unit -> unit
 
+(* Define custom && and || operations. Eff does not seem to recognize them otherwise. *)
+let (||) x y = if x then true else if y then true else false
+let (&&) x y = if x then (if y then true else false) else false
+
 type 'a state =
   | State of bool list
   | Resume of bool list * (unit -> 'a state -> a' state)
@@ -48,17 +52,6 @@ let rec parse = function
   | []        -> false
   | v::xs     -> failwith "Unrecognized symbol"
 
-let (||) x y =
-  if x then true
-  else if y then true
-  else false
-
-let (&&) x y =
-  if x then
-    if y then true
-    else false
-  else false
-
 let parse_handler = handler
   | effect And k   -> binary_operation k (&&)
   | effect Or k    -> binary_operation k (||)
@@ -68,7 +61,6 @@ let parse_handler = handler
   | effect True k  -> append k true
   | effect False k -> append k false
   | _      -> (fun s -> s)
-
 
 let solve str_list =
   let solver = with parse_handler handle parse str_list in
