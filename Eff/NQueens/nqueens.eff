@@ -20,15 +20,39 @@ let rec choose = function
 (* NQUEENS *)
 let rec queens n =
   let rec put_queen x qns =
-    if x > n then qns else
+    if x = 0 then qns else
     let next = choose (available n x qns) in
-    put_queen (x + 1) ((x,next)::qns)
-  in put_queen 1 []
+    put_queen (x - 1) ((x,next)::qns)
+  in put_queen n []
 
 (* SOLVER / HANDLER *)
 let selector = handler
   | effect Select k -> k true @ k false
-  | effect Fail k   -> []
-  | x       -> [x]
+  | effect Fail   _ -> []
+  | x               -> [x]
 
 let solve n = with selector handle queens n
+
+(* TIME TESTING CODE *)
+
+let timer f gen n m =
+  let rec calc_average_time sum = function
+  | 0 -> sum /. (float_of_int m)
+  | x ->
+    let y = gen n in
+    let t0 = perform System_time in
+    let _ = f y in
+    let diff = (perform System_time -. t0) *. 1000.0 in
+    calc_average_time (sum +. diff) (x - 1)
+  in
+  calc_average_time 0.0 m
+
+let timer_loop f start stop avg =
+  let rec looper i =
+    if i <= stop then print i; print_string ","; print_endline (timer f (fun n -> n) i avg); looper (i + 1)
+    else print_string "end\n"
+  in
+  print_string "n,x\n";
+  looper start
+
+let _ = timer_loop solve 1 13 1
