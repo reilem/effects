@@ -14,15 +14,15 @@ module Evaluator : sig
   val evaluateF : string -> int -> int -> int -> int -> unit
 end =
 struct
-
-  let timer f x m =
+  let timer f gen n m =
     let rec calc_average_time sum = function
     | 0 -> sum /. (float m)
-    | n ->
+    | x ->
+      let y = gen n in
       let t0 = Sys.time() in
-      let _ = f x in
+      let _ = f y in
       let diff = (Sys.time() -. t0) *. 1000.0 in
-      calc_average_time (sum +. diff) (n - 1)
+      calc_average_time (sum +. diff) (x - 1)
     in
     calc_average_time 0.0 m
 
@@ -32,7 +32,7 @@ struct
     let evaluate solver gen =
       let oc = open_out output_file in
         fprintf oc "n,x\n";
-        iter (fun n -> fprintf oc "%d,%f\n" n (timer solver (gen n) avg)) ary;
+        iter (fun n -> fprintf oc "%d,%f\n" n (timer solver gen n avg)) ary;
       close_out oc;
       printf "Results printed to: %s\n" output_file;
     in
@@ -41,8 +41,8 @@ struct
     | "PRS"  -> evaluate Parser.solve Generator.parse
     | "PIP"  -> evaluate Pipes.solve Generator.pipes
     | "FIB"  -> evaluate Fibonacci.solve Generator.fibo
+    | "FRNG" -> evaluate Fringe.solve Generator.fringe
     | "STRS" -> evaluate Loop.solve Generator.stress
-    | "FRNG" -> failwith "Generator not implemented"
     | _      -> failwith "Invalid function name given"
 end
 

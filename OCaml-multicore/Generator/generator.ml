@@ -1,5 +1,6 @@
 open Random
 open Pervasives
+open Fringe
 
 module Generator : sig
   val nqueens : int -> int
@@ -7,6 +8,7 @@ module Generator : sig
   val parse   : int -> string
   val stress  : int -> int
   val fibo    : int -> int
+  val fringe  : int -> (tree * tree)
   (* val rr      : int -> int
   val tree    : int -> int list *)
 end =
@@ -15,24 +17,31 @@ struct
 
   let nqueens = id
   let fibo = id
-  let stress x = 100*x
+  let stress = id
 
-  let rec pipes n =
-    match n with
+  let rec pipes = function
     | 0 -> []
-    | _ -> Random.int 2 :: (pipes (n-1))
-
-  let randomExp case =
-    let bit1 = Random.int 2 in
-    let bit2 = Random.int 2 in
-    match case with
-    | 0 -> ("AND " ^ (string_of_int bit1)) ^ (string_of_int bit2)
-    | 1 -> ("OR " ^ (string_of_int bit1)) ^ (string_of_int bit2)
-    | 2 -> "NOT " ^ (string_of_int bit1)
-    | _ -> ""
+    | n -> Random.int 2 :: (pipes (n-1))
 
   let rec parse n =
+    let rand_exp f g n =
+      if n < 33 then f () ^ " AND " ^ g ()
+      else if n < 66 then f () ^ " OR " ^ g ()
+      else "NOT " ^ f ()
+    in
+    let e = Random.int 99 in
+    let b1 = Random.int 2 in
+    let b2 = Random.int 2 in
+    let gen_expr f g = "(" ^ rand_exp f g e ^ ")" in
     match n with
-    | 0 -> ""
-    | _ -> (randomExp (Random.int 3)) ^ (parse (n-1))
+    | 0 -> gen_expr (fun () -> string_of_int b1) (fun () -> string_of_int b2)
+    | n -> gen_expr (fun () -> parse @@ n - 1) (fun () -> parse @@ n - 1)
+
+  (* Returns a tuple containing two identical balanced trees *)
+  let fringe depth =
+    let rec gen_tree = function
+    | 0 -> Leaf (Random.int 100)
+    | x -> Node (gen_tree @@ x - 1, gen_tree @@ x - 1)
+    in
+    let t = gen_tree depth in (t, t)
 end

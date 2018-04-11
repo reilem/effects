@@ -50,16 +50,16 @@ struct
     to_list (String.length s - 1) []
 
   let rec parse = function
+    | 'A'::'N'::'D'::xs -> perform And; parse xs
+    | 'N'::'O'::'T'::xs -> perform Not; parse xs
+    | 'O'::'R'::xs      -> perform Or; parse xs
     | '1'::xs           -> perform True; parse xs
     | '0'::xs           -> perform False; parse xs
-    | 'A'::'N'::'D'::xs -> perform And; parse xs
-    | 'O'::'R'::xs      -> perform Or; parse xs
-    | 'N'::'O'::'T'::xs -> perform Not; parse xs
     | '('::xs           -> perform L_Br; parse xs
     | ')'::xs           -> perform R_Br; parse xs
     | ' '::xs           -> parse xs
     | []                -> false
-    | v::xs             -> raise Unrecognized_Symbol
+    | _                 -> raise Unrecognized_Symbol
 
   let solve str =
     let solver =

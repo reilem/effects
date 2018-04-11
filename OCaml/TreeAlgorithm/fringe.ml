@@ -3,7 +3,7 @@ type tree =
   | Node of tree * tree
 
 module Fringe : sig
-  val solve: tree -> tree -> bool
+  val solve: tree * tree -> bool
 end =
 struct
   type 'a state =
@@ -15,7 +15,7 @@ struct
     | (Node (l, r))::xs -> next (l::r::xs)
     | _                 -> Done
 
-  let solve t1 t2 =
+  let solve (t1,t2) =
     let rec fringe l r =
       match (next l, next r) with
       | Wait (x,t1), Wait (y,t2) -> if x == y then fringe t1 t2 else false
