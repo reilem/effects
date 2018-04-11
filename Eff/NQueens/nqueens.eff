@@ -47,12 +47,14 @@ let timer f gen n m =
   in
   calc_average_time 0.0 m
 
-let timer_loop f start stop avg =
+let timer_loop f start stop avg step =
   let rec looper i =
-    if i <= stop then print i; print_string ","; print_endline (timer f (fun n -> n) i avg); looper (i + 1)
+    if i <= stop then
+      print i; print_string ","; print_endline (timer f (fun n -> n) i avg);
+      looper (i + step)
     else print_string "end\n"
   in
   print_string "n,x\n";
   looper start
 
-let _ = timer_loop solve 1 13 1
+let _ = timer_loop solve 1 11 1 1

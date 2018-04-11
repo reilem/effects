@@ -8,3 +8,29 @@ let looper n = handler
   | effect (Check _) k -> (fun s -> if s < n then k true (s + 1) else k false s)
 
 let solve n = (with (looper n) handle loop ()) 0
+
+(* TIME TESTING CODE *)
+
+let timer f gen n m =
+  let rec calc_average_time sum = function
+  | 0 -> sum /. (float_of_int m)
+  | x ->
+    let y = gen n in
+    let t0 = perform System_time in
+    let _ = f y in
+    let diff = (perform System_time -. t0) *. 1000.0 in
+    calc_average_time (sum +. diff) (x - 1)
+  in
+  calc_average_time 0.0 m
+
+let timer_loop f start stop avg step =
+  let rec looper i =
+    if i <= stop then
+      print i; print_string ","; print_endline (timer f (fun n -> n) i avg);
+      looper (i + step)
+    else print_string "end\n"
+  in
+  print_string "n,x\n";
+  looper start
+
+let _ = timer_loop solve 10000 150000 1 10000
