@@ -18,9 +18,6 @@ test:
 	@echo "Running fringe time tests, (verify if two binary trees have same leaves). Trees randomly generated with depths between 1 and 20."
 	@echo "Each test is run an average of 25 times."
 	@./run_timer FRNG 1    20   25
-	@echo "Running stress tests. Perform an effect loop 10000 to 500000 times in steps of 10000."
-	@echo "Each test is run an average of 50 times."
-	@./run_timer STRS 10000 500000 50 10000
 
 clean:
 	rm -f run_timer
