@@ -37,13 +37,13 @@ let unary_operation k f = function
   | _       -> error ()
 
 let rec parse = function
-  | "1"::xs   -> #True (); parse xs
-  | "0"::xs   -> #False (); parse xs
-  | "AND"::xs -> #And (); parse xs
-  | "OR"::xs  -> #Or (); parse xs
-  | "NOT"::xs -> #Not (); parse xs
-  | "("::xs   -> #L_Br (); parse xs
-  | ")"::xs   -> #R_Br (); parse xs
+  | "1"::xs   -> perform True; parse xs
+  | "0"::xs   -> perform False; parse xs
+  | "AND"::xs -> perform And; parse xs
+  | "OR"::xs  -> perform Or; parse xs
+  | "NOT"::xs -> perform Not; parse xs
+  | "("::xs   -> perform L_Br; parse xs
+  | ")"::xs   -> perform R_Br; parse xs
   | " "::xs   -> parse xs
   | []        -> false
   | v::xs     -> failwith "Unrecognized symbol"
@@ -60,14 +60,14 @@ let (&&) x y =
   else false
 
 let parse_handler = handler
-  | val x      -> (fun s -> s)
-  | #And _ k   -> binary_operation k (&&)
-  | #Or _ k    -> binary_operation k (||)
-  | #Not _ k   -> unary_operation  k (not)
-  | #L_Br _ k  -> (fun s -> k () empty)
-  | #R_Br _ k  -> resume k
-  | #True _ k  -> append k true
-  | #False _ k -> append k false
+  | effect And k   -> binary_operation k (&&)
+  | effect Or k    -> binary_operation k (||)
+  | effect Not k   -> unary_operation  k (not)
+  | effect L_Br k  -> (fun s -> k () empty)
+  | effect R_Br k  -> resume k
+  | effect True k  -> append k true
+  | effect False k -> append k false
+  | _      -> (fun s -> s)
 
 
 let solve str_list =

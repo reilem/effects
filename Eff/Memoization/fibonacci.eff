@@ -8,13 +8,13 @@ let rec find n = function
 
 let rec fibo_mem = function
   | 0 -> 0 | 1 -> 1 | 2 -> 1
-  | n -> match #Get n with
+  | n -> match perform (Get n) with
     | Some x -> x
-    | None -> let value = fibo_mem (n - 1) + fibo_mem (n - 2) in #Put (n,value); value
+    | None -> let value = fibo_mem (n - 1) + fibo_mem (n - 2) in perform (Put (n,value)); value
 
 let store = handler
-  | val x -> (fun s -> x)
-  | #Get n k -> (fun s -> k (find n s) s)
-  | #Put tup k -> (fun s -> k () (tup::s))
+  | effect (Get n) k -> (fun s -> k (find n s) s)
+  | effect (Put tup) k -> (fun s -> k () (tup::s))
+  | x -> (fun s -> x)
 
 let solve n = (with store handle fibo_mem n) []

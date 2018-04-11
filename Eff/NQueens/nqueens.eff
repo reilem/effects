@@ -14,8 +14,8 @@ let available n x qs =
   checker [] n
 
 let rec choose = function
-  | []    -> #Fail ()
-  | x::xs -> if #Select () then x else choose xs
+  | []    -> perform Fail
+  | x::xs -> if perform Select then x else choose xs
 
 (* NQUEENS *)
 let rec queens n =
@@ -27,8 +27,8 @@ let rec queens n =
 
 (* SOLVER / HANDLER *)
 let selector = handler
-  | val x       -> [x]
-  | #Select _ k -> k true @ k false
-  | #Fail _ k   -> []
+  | effect Select k -> k true @ k false
+  | effect Fail k   -> []
+  | x       -> [x]
 
 let solve n = with selector handle queens n

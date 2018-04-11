@@ -6,10 +6,10 @@ let negate = function | 0 -> -1 | n -> n
 
 let rec find_subarray = function
   | []    -> []
-  | x::xs -> #Check (x::xs); find_subarray xs
+  | x::xs -> perform (Check (x::xs)); find_subarray xs
 
 let array_checker = handler
-  | #Check sublst k ->
+  | effect (Check sublst) k ->
     let rec sub_search sum acc best = function
       | [] -> reverse best
       | next::rest ->

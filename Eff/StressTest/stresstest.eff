@@ -1,10 +1,10 @@
 
 effect Check : unit -> bool
 
-let rec loop () = if #Check () then loop () else ()
+let rec loop () = if perform Check then loop () else ()
 
 let looper n = handler
-  | val x      -> (fun s -> ())
-  | #Check _ k -> (fun s -> if s < n then k true (s + 1) else k false s)
+  | x                  -> (fun s -> ())
+  | effect (Check _) k -> (fun s -> if s < n then k true (s + 1) else k false s)
 
 let solve n = (with (looper n) handle loop ()) 0

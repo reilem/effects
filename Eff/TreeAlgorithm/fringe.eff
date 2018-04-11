@@ -10,12 +10,12 @@ type 'a state =
 
 let walk t =
   let rec step = function
-    | Leaf v       -> #Wait v
+    | Leaf v       -> perform (Wait v)
     | Node (t1,t2) -> step t1; step t2
   in
   let waiter = handler
-    | val _     -> Done
-    | #Wait v k -> Waiting (v,k)
+    | effect (Wait v) k -> Waiting (v,k)
+    | _     -> Done
   in
   with waiter handle step t
 
