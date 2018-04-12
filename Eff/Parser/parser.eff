@@ -20,25 +20,25 @@ let empty = State []
 
 let append k b = function
   | State s -> k () (State (b::s))
-  | _      -> error ()
+  | _       -> error ()
 
 let resume k = function
   | State s -> Resume (s, k)
-  | _      -> error ()
+  | _       -> error ()
 
 let binary_operation k f = function
   | State [x] -> (match k () empty with
-    | State [y]        -> State [f x y]
+    | State [y]       -> State [f x y]
     | Resume ([y],k') -> k' () (State [f x y])
     | _               -> error ())
-  | _        -> error ()
+  | _         -> error ()
 
 let unary_operation k f = function
   | State [] -> (match k () empty with
-    | State [x]        -> State [f x]
+    | State [x]       -> State [f x]
     | Resume ([x],k') -> k' () (State [f x])
     | _               -> error ())
-  | _       -> error ()
+  | _        -> error ()
 
 let rec parse = function
   | "1"::xs   -> perform True; parse xs
@@ -50,7 +50,7 @@ let rec parse = function
   | ")"::xs   -> perform R_Br; parse xs
   | " "::xs   -> parse xs
   | []        -> false
-  | v::xs     -> failwith "Unrecognized symbol"
+  | _         -> failwith "Unrecognized symbol"
 
 let parse_handler = handler
   | effect And k   -> binary_operation k (&&)
@@ -60,10 +60,50 @@ let parse_handler = handler
   | effect R_Br k  -> resume k
   | effect True k  -> append k true
   | effect False k -> append k false
-  | _      -> (fun s -> s)
+  | _              -> (fun s -> s)
 
-let solve str_list =
-  let solver = with parse_handler handle parse str_list in
+let solve str_lst =
+  let solver = with parse_handler handle parse str_lst in
   match solver empty with
   | State [x] -> x
-  | _        -> false
+  | _         -> false
+
+(* TIME TESTING CODE *)
+
+let rec generate_exp n =
+  let rand_exp f g n =
+    if n < 33 then f () @ ["AND"] @ g ()
+    else if n < 66 then f () @ ["OR"] @ g ()
+    else ["NOT"] @ f ()
+  in
+  let e = perform (Random_int 99) in
+  let b1 = perform (Random_int 2) in
+  let b2 = perform (Random_int 2) in
+  let gen_expr f g = ["("] @ rand_exp f g e @ [")"] in
+  match n with
+  | 0 -> gen_expr (fun () -> [to_string b1]) (fun () -> [to_string b2])
+  | n -> gen_expr (fun () -> generate_exp (n - 1)) (fun () -> generate_exp (n - 1))
+
+let timer f gen n m =
+  let rec calc_average_time sum = function
+  | 0 -> sum /. (float_of_int m)
+  | x ->
+    let y = gen n in
+    let t0 = perform System_time in
+    let _ = f y in
+    let diff = (perform System_time -. t0) *. 1000.0 in
+    calc_average_time (sum +. diff) (x - 1)
+  in
+  calc_average_time 0.0 m
+
+let timer_loop f start stop avg step =
+  let rec looper i =
+    if i <= stop then
+      print i; print_string ","; print_endline (timer f generate_exp i avg);
+      looper (i + step)
+    else print_string "end\n"
+  in
+  print_string "n,x\n";
+  looper start
+
+let _ = timer_loop solve 1 15 10 1

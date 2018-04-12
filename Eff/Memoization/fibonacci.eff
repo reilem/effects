@@ -1,5 +1,4 @@
 effect Put : (int * int) -> unit
-
 effect Get : int -> int option
 
 let rec find n = function
