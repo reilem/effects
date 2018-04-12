@@ -1,9 +1,11 @@
+_out
+
 # Mac OS git ignores
 # -----------------
 
 .DS_Store
 
-# OCaml git ignores
+# OCaml (+ multicore) git ignores
 # -----------------
 
 *.cmi
@@ -16,10 +18,11 @@ OCaml-multicore/run_timer
 OCaml/_out/
 OCaml/run_timer
 
-# Eff git ignores
+# Eff ignores
 # -----------------
 
-# Links git ignores
+Eff/_out/
+Eff/eff/
+
+# Links ignores
 # -----------------
-
-

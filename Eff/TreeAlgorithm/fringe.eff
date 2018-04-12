@@ -1,8 +1,8 @@
+effect Wait : int -> unit
+
 type tree =
   | Leaf of int
   | Node of tree * tree
-
-effect Wait : int -> unit
 
 type 'a state =
   | Done
@@ -10,16 +10,16 @@ type 'a state =
 
 let walk t =
   let rec step = function
-    | Leaf v       -> #Wait v
+    | Leaf v       -> perform (Wait v)
     | Node (t1,t2) -> step t1; step t2
   in
   let waiter = handler
-    | val _     -> Done
-    | #Wait v k -> Waiting (v,k)
+    | effect (Wait v) k -> Waiting (v,k)
+    | _     -> Done
   in
   with waiter handle step t
 
-let solve t1 t2 =
+let solve (t1, t2) =
   let rec walker l r =
     match l (), r () with
     | Done, Done                       -> true
@@ -28,3 +28,36 @@ let solve t1 t2 =
       else false
     | _, _                             -> false
   in walker (fun () -> walk t1) (fun () -> walk t2)
+
+(* TIME TESTING CODE *)
+
+let generate_tree depth =
+  let rec gen_tree = function
+  | 0 -> Leaf (perform (Random_int 100))
+  | x -> Node (gen_tree (x - 1), gen_tree (x - 1))
+  in
+  let t = gen_tree depth in (t,t)
+
+let timer f gen n m =
+  let rec calc_average_time sum = function
+  | 0 -> sum /. (float_of_int m)
+  | x ->
+    let y = gen n in
+    let t0 = perform System_time in
+    let _ = f y in
+    let diff = (perform System_time -. t0) *. 1000.0 in
+    calc_average_time (sum +. diff) (x - 1)
+  in
+  calc_average_time 0.0 m
+
+let timer_loop f start stop avg step =
+  let rec looper i =
+    if i <= stop then
+      print i; print_string ","; print_endline (timer f generate_tree i avg);
+      looper (i + step)
+    else ()
+  in
+  print_string "n,x\n";
+  looper start
+
+let _ = timer_loop solve 1 15 5 1
