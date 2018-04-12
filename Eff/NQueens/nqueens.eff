@@ -52,7 +52,7 @@ let timer_loop f start stop avg step =
     if i <= stop then
       print i; print_string ","; print_endline (timer f (fun n -> n) i avg);
       looper (i + step)
-    else print_string "end\n"
+    else ()
   in
   print_string "n,x\n";
   looper start
