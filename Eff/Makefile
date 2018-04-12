@@ -1,3 +1,10 @@
+install_eff:
+	git clone git@github.com:reilem/eff.git
+	cd eff
+	./configure
+	make
+	sudo make install
+
 compile_run:
 	eff Memoization/fibonacci.eff
 	@echo ""
