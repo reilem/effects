@@ -1,7 +1,5 @@
 import std/time
 
-val number = 10000
-
 effect check {
   fun do_check() : bool
 }
@@ -12,11 +10,11 @@ fun looper () {
 
 val loop_handle = handler(s) {
   return x -> x
-  do_check -> resume(s < number, (s+1))
+  do_check -> resume(s > 0, (s - 1))
 }
 
-fun solve () {
-  loop_handle(0, looper)
+fun solve (n) {
+  loop_handle(n, looper)
 }
 
-# :l stresstest.kk
+# :l ../stresstest.kk
