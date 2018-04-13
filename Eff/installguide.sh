@@ -11,5 +11,7 @@ eval `opam config env`
 
 # Install menhir
 opam install menhir
+# Install js_of_ocaml
+opam install js_of_ocaml
 # Download and build Eff
 opam pin add eff git@github.com:matijapretnar/eff.git
