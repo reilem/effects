@@ -12,9 +12,9 @@ let rec fibo_mem = function
     | None -> let value = fibo_mem (n - 1) + fibo_mem (n - 2) in perform (Put (n,value)); value
 
 let store = handler
-  | effect (Get n) k -> (fun s -> k (find n s) s)
-  | effect (Put tup) k -> (fun s -> k () (tup::s))
-  | x -> (fun s -> x)
+  | effect (Get n) k    -> (fun s -> k (find n s) s)
+  | effect (Put tup) k  -> (fun s -> k () (tup::s))
+  | x                   -> (fun s -> x)
 
 let solve n = (with store handle fibo_mem n) []
 

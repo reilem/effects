@@ -15,3 +15,14 @@ opam install menhir
 opam install js_of_ocaml
 # Download and build Eff
 opam pin add eff git@github.com:matijapretnar/eff.git
+
+
+# Fancy version eff
+opam switch 4.02.1
+opam install ocamlfind
+opam install pprint
+opam install menhir
+
+./eff --compile --no-opt --no-pervasives [eff file name]
+
+[copy paste everything up until "No pervasives" onto the .eff.ml file and run]
