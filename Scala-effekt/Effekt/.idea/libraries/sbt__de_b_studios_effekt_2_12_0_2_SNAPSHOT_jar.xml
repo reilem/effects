@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="sbt: de.b-studios:effekt_2.12:0.2-SNAPSHOT:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/de.b-studios/effekt_2.12/jars/effekt_2.12-0.2-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/de.b-studios/effekt_2.12/srcs/effekt_2.12-0.2-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
