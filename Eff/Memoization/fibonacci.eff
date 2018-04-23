@@ -42,4 +42,4 @@ let timer_loop f start stop avg step =
   print_string "n,x\n";
   looper start
 
-let _ = timer_loop solve 100 2500 10 100
+let _ = timer_loop solve 0 2500 20 100
