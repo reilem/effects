@@ -20,17 +20,17 @@ run_all_eff:
 
 test_all_eff:
 	mkdir -p _out
-	eff Memoization/fibonacci.eff | tail -n 41 > _out/FIB.csv
+	eff Memoization/fibonacci.eff | tail -n 26 > _out/FIB.csv
 	@echo ""
 	eff NQueens/nqueens.eff 			| tail -n 12 > _out/NQ.csv
 	@echo ""
-	eff Parser/parser.eff 				| tail -n 16 > _out/PRS.csv
+	eff Parser/parser.eff 				| tail -n 18 > _out/PRS.csv
 	@echo ""
 	eff Pipes/pipes.eff 					| tail -n 51 > _out/PIP.csv
 	@echo ""
-	eff StressTest/stresstest.eff | tail -n 16 > _out/STRS.csv
+	eff StressTest/stresstest.eff | tail -n 18 > _out/STRS.csv
 	@echo ""
-	eff TreeAlgorithm/fringe.eff 	| tail -n 16 > _out/FRNG.csv
+	eff TreeAlgorithm/fringe.eff 	| tail -n 17 > _out/FRNG.csv
 
 build_ocaml:
 	@chmod +x build.sh

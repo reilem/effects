@@ -60,4 +60,4 @@ let timer_loop f start stop avg step =
   print_string "n,x\n";
   looper start
 
-let _ = timer_loop solve 1 15 5 1
+let _ = timer_loop solve 1 16 5 1
