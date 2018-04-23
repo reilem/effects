@@ -27,6 +27,8 @@ struct
     calc_average_time 0.0 m
 
   let evaluateF func strt up avg stp =
+    printf "%s time tests finished for values between %d and %d, in steps of %d.\n" func strt up stp;
+    printf "Each test was run an average of %d times.\n" avg;
     let output_file =  "_out/" ^ func ^ ".csv" in
     let ary = init (((up - strt) / stp) + 1) (fun i -> strt + (stp * i)) in
     let evaluate solver gen =

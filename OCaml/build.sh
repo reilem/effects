@@ -62,7 +62,7 @@ build() {
 }
 # Switch to multicore opam and configure
 echo "# Switching to standard OCaml compiler"
-opam switch 4.05.0 >/dev/null
+opam switch 4.02.1 >/dev/null
 eval `opam config env`
 echo "# Building..."
 # Run main build function
