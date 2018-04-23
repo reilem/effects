@@ -1,0 +1,32 @@
+external ( = ) : int -> int -> bool = "="
+
+effect Wait : int -> unit
+
+type tree =
+  | Leaf of int
+  | Node of tree * tree
+
+type 'a state =
+  | Done
+  | Waiting of int * (unit -> 'a state)
+
+let walk t =
+  let rec step = function
+    | Leaf v       -> #Wait v
+    | Node (t1,t2) -> step t1; step t2
+  in
+  let waiter = handler
+    | #Wait v k -> Waiting (v,k)
+    | val _     -> Done
+  in
+  with waiter handle step t
+
+let solve (t1, t2) =
+  let rec walker l r =
+    match l (), r () with
+    | Done, Done                       -> true
+    | Waiting (v1,k1), Waiting (v2,k2) ->
+      if v1 = v2 then walker (fun () -> k1 ()) (fun () -> k2 ())
+      else false
+    | _, _                             -> false
+  in walker (fun () -> walk t1) (fun () -> walk t2)
