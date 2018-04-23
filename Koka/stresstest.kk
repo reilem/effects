@@ -47,7 +47,7 @@ fun timer_loop(f, start : int, stop : int, avg : int, step : int) {
 }
 
 fun main () {
-  timer_loop(solve, 10000, 500000, 50, 10000)
+  timer_loop(solve, 0, 500000, 50, 10000)
 }
 
 // :l ../stresstest.kk

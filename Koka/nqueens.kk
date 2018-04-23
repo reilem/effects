@@ -101,6 +101,7 @@ fun timer_loop(f, start : int, stop : int, avg : int, step : int) {
 }
 
 fun main () {
+  timer_loop(solve, 0, 10, 20, 1)
   timer_loop(solve, 11, 13, 1, 1)
 }
 
