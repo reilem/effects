@@ -7,7 +7,7 @@ effect choice {
 
 fun noAttack (i : int, j : int, lst : list<(int, int)>) : bool {
   match (lst) {
-    Nil            -> True
+    Nil                         -> True
     Cons((k : int, l : int),xs) -> { i != k && j != l && abs(i - k) != abs(j - l) && noAttack(i, j, xs) }
   }
 }
