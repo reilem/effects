@@ -27,8 +27,7 @@ object NQueens {
     check(Nil, n)
   }
 
-  def queens(implicit choice: Use[Choice]): Control[List[(Int, Int)]] = {
-    val n = 8
+  def queens(n: Int)(implicit choice: Use[Choice]): Control[List[(Int, Int)]] = {
 
     def choose(list: List[Int]): Control[Int] = {
       list match {
@@ -64,7 +63,7 @@ object NQueens {
     override def unit: List[(Int, Int)] => List[List[(Int, Int)]] = s => List(s)
   }
 
-  val handler: Control[List[List[(Int, Int)]]] = queensHandler { implicit h => queens }
+  val handler: Control[List[List[(Int, Int)]]] = queensHandler { implicit h => queens(4) }
 
   def main(args: Array[String]): Unit = {
     val result = handler.run()
