@@ -28,10 +28,8 @@ object Fibonacci {
           case None => for {
             v1 <- fibo_mem(n - 1)
             v2 <- fibo_mem(n - 2)
-          } yield {
-            val newV = v1 + v2
-            put((n, newV)); newV
-          }
+            _  <- put((n, v1 + v2))
+          } yield v1 + v2
         }
       } yield v
     }
@@ -48,7 +46,7 @@ object Fibonacci {
   }
 
   def main(args: Array[String]): Unit = {
-    val result = fibHandler(Nil) { implicit h => fibo_mem(8) }.run()
+    val result = fibHandler(Nil) { implicit h => fibo_mem(1000) }.run()
     println(result)
   }
 }
