@@ -1,16 +1,16 @@
 import effekt._
 
-trait Choice extends Eff {
+trait Selector extends Eff {
   def select(): Op[Boolean]
   def fail(): Op[Int]
 }
 
 object Pure {
 
-  def fail()(implicit u: Use[Choice]): Control[Int] = use(u) { u.handler.fail() }
-  def select()(implicit u: Use[Choice]): Control[Boolean] = use(u) { u.handler.select() }
+  def fail()(implicit u: Use[Selector]): Control[Int] = use(u) { u.handler.fail() }
+  def select()(implicit u: Use[Selector]): Control[Boolean] = use(u) { u.handler.select() }
 
-  def prog(implicit choice: Use[Choice]): Control[List[(Int, Int)]] = {
+  def prog(implicit choice: Use[Selector]): Control[List[(Int, Int)]] = {
     def choose(list: List[Int]): Control[Int] = {
       list match {
         case Nil => fail()
@@ -28,7 +28,7 @@ object Pure {
     } yield l
   }
 
-  def pureHandler = new Handler.Basic[List[(Int, Int)], List[(Int, Int)]] with Choice {
+  def pureHandler = new Handler.Basic[List[(Int, Int)], List[(Int, Int)]] with Selector {
 
     override def unit: List[(Int, Int)] => List[(Int, Int)] = identity
 

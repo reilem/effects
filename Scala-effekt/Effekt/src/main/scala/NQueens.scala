@@ -9,8 +9,8 @@ trait Choice extends Eff {
 
 object NQueens {
 
-  def fail()(implicit u: Use[Choice0]): Control[Int] = use(u) { u.handler.fail() }
-  def select()(implicit u: Use[Choice0]): Control[Boolean] = use(u) { u.handler.select() }
+  def fail()(implicit u: Use[Choice]): Control[Int] = use(u) { u.handler.fail() }
+  def select()(implicit u: Use[Choice]): Control[Boolean] = use(u) { u.handler.select() }
 
   def noAttack(i: Int, j: Int, qs: List[(Int, Int)]): Boolean = qs match {
     case Nil => true
@@ -27,7 +27,7 @@ object NQueens {
     check(Nil, n)
   }
 
-  def queens(implicit choice: Use[Choice0]): Control[List[(Int, Int)]] = {
+  def queens(implicit choice: Use[Choice]): Control[List[(Int, Int)]] = {
     val n = 8
 
     def choose(list: List[Int]): Control[Int] = {
@@ -50,7 +50,7 @@ object NQueens {
     put_queen(n, Nil)
   }
 
-  def queensHandler = new Handler.Basic[List[(Int, Int)], List[List[(Int, Int)]]] with Choice0 {
+  def queensHandler = new Handler.Basic[List[(Int, Int)], List[List[(Int, Int)]]] with Choice {
 
     override def select(): Unit => (Boolean => Unit => Control[List[List[(Int, Int)]]]) => Control[List[List[(Int, Int)]]] =
       _ => resume => for {
