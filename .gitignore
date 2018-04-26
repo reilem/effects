@@ -1,9 +1,8 @@
-_out
-
-# Mac OS git ignores
+# General ignores
 # -----------------
 
 .DS_Store
+_out
 
 # OCaml (+ multicore) git ignores
 # -----------------
@@ -24,7 +23,30 @@ OCaml/run_timer
 Eff/_out/
 Eff/eff/
 
-# Links ignores
+# Koka ignores
 # -----------------
 
 Koka/koka/
+Koka/_out
+
+# Scala ignores
+# -----------------
+
+*.class
+*.log
+
+# sbt specific
+.cache/
+.history/
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+.idea
