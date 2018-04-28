@@ -45,9 +45,6 @@ object Fibonacci {
     override def unit: Int => Int = s => s
   }
 
-  def main(args: Array[String]): Unit = {
-    val result = fibHandler(Nil) { implicit h => fibo_mem(1000) }.run()
-    println(result)
-  }
+  def run(bound: Int): Int = fibHandler(Nil) { implicit h => fibo_mem(bound) }.run()
 }
 

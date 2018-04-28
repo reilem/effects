@@ -63,12 +63,10 @@ object NQueens {
     override def unit: List[(Int, Int)] => List[List[(Int, Int)]] = s => List(s)
   }
 
-  val handler: Control[List[List[(Int, Int)]]] = queensHandler { implicit h => queens(8) }
 
-  def main(args: Array[String]): Unit = {
-    val result = handler.run()
-    println(result)
-  }
+
+  def run(bound: Int): List[List[(Int, Int)]] = queensHandler { implicit h => queens(bound) }.run()
+
 }
 
 
