@@ -1,3 +1,4 @@
+import NQueens.run
 import effekt._
 
 trait Stress extends Eff {
@@ -22,5 +23,15 @@ object StressTest {
   }
 
   def run(upperBound: Int): Unit = stressHandler(upperBound) { implicit h => test() }.run()
+
+  def main(args: Array[String]): Unit = {
+    if (args.length >= 1) {
+      val n = args(0).toInt
+      val now = System.currentTimeMillis()
+      run(n)
+      val time = System.currentTimeMillis() - now
+      println(time)
+    }
+  }
 }
 

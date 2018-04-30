@@ -1,3 +1,4 @@
+import NQueens.run
 import effekt._
 
 trait State extends Eff {
@@ -46,5 +47,15 @@ object Fibonacci {
   }
 
   def run(bound: Int): Int = fibHandler(Nil) { implicit h => fibo_mem(bound) }.run()
+
+  def main(args: Array[String]): Unit = {
+    if (args.length >= 1) {
+      val n = args(0).toInt
+      val now = System.currentTimeMillis()
+      run(n)
+      val time = System.currentTimeMillis() - now
+      println(time)
+    }
+  }
 }
 

@@ -8,7 +8,6 @@ trait Choice extends Eff {
 }
 
 object NQueens {
-
   def fail()(implicit u: Use[Choice]): Control[Int] = use(u) { u.handler.fail() }
   def select()(implicit u: Use[Choice]): Control[Boolean] = use(u) { u.handler.select() }
 
@@ -63,10 +62,17 @@ object NQueens {
     override def unit: List[(Int, Int)] => List[List[(Int, Int)]] = s => List(s)
   }
 
-
-
   def run(bound: Int): List[List[(Int, Int)]] = queensHandler { implicit h => queens(bound) }.run()
 
+  def main(args: Array[String]): Unit = {
+    if (args.length >= 1) {
+      val n = args(0).toInt
+      val now = System.currentTimeMillis()
+      run(n)
+      val time = System.currentTimeMillis() - now
+      println(time)
+    }
+  }
 }
 
 

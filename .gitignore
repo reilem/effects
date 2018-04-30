@@ -32,6 +32,9 @@ Koka/_out
 # Scala ignores
 # -----------------
 
+Scala-effekt/_out
+Scala-effekt/Effekt/out
+
 *.class
 *.log
 
