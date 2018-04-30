@@ -11,7 +11,8 @@ object StressTest {
   def test()(implicit state: Use[Stress]): Control[Unit] = {
     for {
       check <- check()
-    } yield if (check) test() else ()
+      res   <- if (check) test() else pure()
+    } yield res
   }
 
   def stressHandler = new Handler.Stateful[Unit, Unit, Int] with Stress {
