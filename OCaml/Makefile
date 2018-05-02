@@ -9,7 +9,7 @@ test:
 	@echo "=============== Parser ==============="
 	./run_timer PRS  0   25   10
 	@echo "============== Fibonacci ============="
-	./run_timer FIB  0   5000 75   100
+	./run_timer FIB  0   50000 100   1000
 	@echo "================ Pipes ==============="
 	./run_timer PIP  0   500  25   10
 	@echo "=============== Fringe ==============="

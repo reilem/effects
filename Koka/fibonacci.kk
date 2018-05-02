@@ -19,7 +19,7 @@ fun fibo_mem (n : int) : <state,div,console> int {
     val x = get(n)
     if (x != -1) then x
     else {
-      val y = fibo_mem(n - 1) + fibo_mem(n - 2)
+      val y = fibo_mem(n - 2) + fibo_mem(n - 1)
       put(n, y)
       y
     }
@@ -69,7 +69,7 @@ fun timer_loop(f, start : int, stop : int, avg : int, step : int) {
 }
 
 fun main () {
-  timer_loop(solve, 0, 5000, 75, 100)
+  timer_loop(solve, 0, 5000, 25, 100)
 }
 
 // :l ../fibonacci.kk

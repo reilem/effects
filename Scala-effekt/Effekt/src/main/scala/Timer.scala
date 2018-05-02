@@ -2,43 +2,42 @@ import java.io.FileWriter
 
 object Timer {
   def main(args: Array[String]): Unit = {
-    val (index, timings) = timer("TEST", 500000, 10)
+//    val list: List[(Int, Float)] = timer("NQ", 0, 15, 1, 1)
+    val list: List[(Int, Float)] = timer("FIB", 0, 5000, 25, 100)
+//    val list: List[(Int, Float)] = timer("STRS", 0, 500000, 50, 10000)
 
     val csv = new FileWriter("test.csv")
-    csv.append("n")
-    csv.append(",")
-    csv.append("x")
-    csv.append("\n")
-    (index, timings).zipped.foreach((x,y) => {
-      csv.append(x.toString)
-      csv.append(",")
-      csv.append(y.toString)
-      csv.append("\n")
+    csv.append("n,x\n")
+    list.foreach(t => {
+      csv.append(t._1.toString + "," + t._2.toString + "\n")
     })
     csv.close()
     print("DONE")
   }
 
-  def timer(functionName: String, upperBounds: Int, iterations: Int): (List[Int], List[Float]) = {
-    var indexColumn = (0 to upperBounds).toList
-    var timeColumn: List[Float] = Nil
+  def timer(functionName: String, lowerBounds: Int, upperBounds: Int, iterations: Int, step: Int): List[(Int, Float)] = {
+    evaluateF(functionName, upperBounds)
+    var timeList: List[(Int, Float)] = Nil
+    println("n,x")
     try {
-    for( i <- 0 to upperBounds) {
+    for(i <- lowerBounds to upperBounds by step) {
       val startTime = System.nanoTime()
-      for (t <- 0 to iterations) evaluateF(functionName, i)
+      for (_ <- 0 to iterations) evaluateF(functionName, i)
       val endTime = System.nanoTime()
       val duration: Float = endTime - startTime
-      timeColumn = (duration / (1000000 * iterations)) :: timeColumn
+      val res = duration / (1000000 * iterations)
+      println(i.toString + "," + res.toString)
+      timeList = timeList:::List((i,res))
     }
     } catch {
-      case exc: IllegalArgumentException => return (Nil, Nil)
+      case exc: IllegalArgumentException => return Nil
     }
-    (indexColumn.reverse, timeColumn)
+    timeList
   }
 
   def evaluateF(functionName: String, i: Int) = functionName match {
     case "NQ" => NQueens.run(i)
-    case "STRESS" => StressTest.run(i)
+    case "STRS" => StressTest.run(i)
     case "FIB" => Fibonacci.run(i)
     case _ => throw new IllegalArgumentException("No such function found")
   }

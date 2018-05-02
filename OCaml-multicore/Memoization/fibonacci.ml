@@ -13,7 +13,7 @@ struct
     | 0 -> 0 | 1 -> 1 | 2 -> 1
     | n -> match perform (Get n) with
       | Some x -> x
-      | None   -> let value = fibo_mem (n - 1) + fibo_mem (n - 2) in
+      | None   -> let value = fibo_mem (n - 2) + fibo_mem (n - 1) in
           perform (Put (n,value)); value
 
   let solve n =

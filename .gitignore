@@ -53,3 +53,9 @@ project/plugins/project/
 .scala_dependencies
 .worksheet
 .idea
+
+Eff/_out_final/
+
+OCaml-multicore/_out_final/
+
+OCaml/_out_final/

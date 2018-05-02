@@ -5,11 +5,11 @@ build:
 test:
 	@echo "Running time tests..."
 	@echo "================ NQueens ================"
-	./run_timer NQ   0 13   5
+	./run_timer NQ   0 15   1
 	@echo "================ Parser ================="
 	./run_timer PRS  0 25   10
 	@echo "=============== Fibonacci ==============="
-	./run_timer FIB  0 5000 75 100
+	./run_timer FIB  0 50000 100 100
 	@echo "================= Pipes ================="
 	./run_timer PIP  0 500  25  10
 	@echo "================ Fringe ================="

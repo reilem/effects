@@ -12,7 +12,7 @@ struct
       let rec fibo_mem = function
         | m -> match find m !lst with
           | Some x -> x
-          | None -> let value = fibo_mem (m - 1) + fibo_mem (m - 2) in
+          | None -> let value = fibo_mem (m - 2) + fibo_mem (m - 1) in
               lst := ((m,value)::!lst); value
       in fibo_mem n
 end

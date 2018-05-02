@@ -27,8 +27,8 @@ object Fibonacci {
         v <- c match {
           case Some(x) => pure(x)
           case None => for {
-            v1 <- fibo_mem(n - 1)
-            v2 <- fibo_mem(n - 2)
+            v1 <- fibo_mem(n - 2)
+            v2 <- fibo_mem(n - 1)
             _  <- put((n, v1 + v2))
           } yield v1 + v2
         }
@@ -58,4 +58,3 @@ object Fibonacci {
     }
   }
 }
-
