@@ -1,13 +1,23 @@
-Install koka in this directory 
+# Running Koka code
 
-$ git clone https://github.com/koka-lang/koka.git
+## Setup
 
-$ cd koka
+Install koka in this directory:
 
-$ npm install
+`$ git clone https://github.com/koka-lang/koka.git`
 
-$ jake
+`$ cd koka`
 
-then when running jake, load in files with
+`$ npm install`
 
-> :l ../[filename].kk
+`$ jake`
+
+## Usage
+
+Then when running `jake`, load in files with:
+
+`\> :l ../[filename].kk`
+
+and execute them with:
+
+`\> main()`
