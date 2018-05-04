@@ -54,4 +54,4 @@ We have already gone through the trouble of compiling the eff code found in this
 
 `make clean_results` - cleans all results form the output folder
 
-`make clean_all` - performs `make clean` and `make clean_results`
+`make clean_all` - performs `make clean_ocaml` and `make clean_results`

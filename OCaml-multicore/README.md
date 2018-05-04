@@ -19,7 +19,7 @@ Switch to ocaml multicore compiler:
 
 Setup new switch in the current shell:
 
-``$ eval `opam config env```
+``$ eval `opam config env` ``
 
 ## Execution
 

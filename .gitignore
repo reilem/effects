@@ -22,6 +22,7 @@ OCaml/run_timer
 
 Eff/_out/
 Eff/eff/
+Eff/run_timer
 
 # Koka ignores
 # -----------------

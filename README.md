@@ -3,7 +3,8 @@
 
 ### Introduction
 
-The purpose of this repo is to test and compare the performance of different implementations of effects.
+The purpose of this repo is to test and compare the performance of different
+implementations of algebraic effects and effect handlers.
 This repo contains implementations for a number of algorithms in OCaml,
 OCaml multicore, Eff, Koka and Scala. Each language also contains a time testing
 method which will vary from language to language. See the README's in each
