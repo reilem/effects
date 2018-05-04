@@ -10,16 +10,23 @@ and OCaml multicore. This repo is a work in progress.
 
 Our results can be found at our github pages site at: https://reilem.github.io/effects/
 
+Or in the per language `_results` folder that can be found in each language's directory.
+
 ### Setup
 
-All code in this repo will require ocaml and opam to setup, compile and run.
+#### OCaml setup (Eff, OCaml-multicore, OCaml)
+
+All OCaml code in this repo will require ocaml and opam to setup, compile and run.
 
 OCaml compiler and library installation instructions can be found at:
 https://ocaml.org/docs/install.html
 
-
 Opam is a package manager for OCaml. Installation instructions can be found at:
 http://opam.ocaml.org/doc/Install.html
+
+#### Scala setup
+
+#### Koka setup
 
 ### Running code
 

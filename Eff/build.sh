@@ -1,11 +1,4 @@
 set -e
-# INSTRUCTIONS:
-# Give execution permission to this script:
-# $ chmod +x make.sh
-# Run this script:
-# $ ./make.sh
-# Run the executable:
-# $ ./run
 
 # Build function
 build() {

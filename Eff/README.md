@@ -8,6 +8,8 @@ The install guide script `installguide.sh` contains a guide and all necessary
 commands to install eff. It is recommended to run each command individually
 but running the script directly is also an option and should be sufficient.
 
+Complete installation instructions can be found at: https://github.com/matijapretnar/eff
+
 ## Execution
 
 (Make sure you have run `opam switch 4.05.0`, or whichever latest stable version you are running before continuing)

@@ -1,0 +1,25 @@
+FIB  - [0 - 2500], avg: 20, step: 100
+
+FIB0  - [0 - 3000], avg: 20, step: 100
+
+===
+
+NQ   - [0 - 11], avg: 1, step: 1
+
+NQ0 - [0 - 14], avg: 1, step: 1
+
+===
+
+PIP  - [0 - 500], avg: 5, step: 10
+
+PIP0 - [0 - 750], avg: 25, step: 10
+
+===
+
+STRS - [0 - 170000], avg: 10, stack-overflow at 180000, step: 10000
+
+STRS0 - [0 - 500000], avg: 50, step: 10000
+
+===
+
+FRNG - [0 - 16], avg 5:, stack-overflow at 17, step: 1
