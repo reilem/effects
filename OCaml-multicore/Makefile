@@ -9,9 +9,9 @@ test:
 	@echo "================ Parser ================="
 	./run_timer PRS  0 25   10
 	@echo "=============== Fibonacci ==============="
-	./run_timer FIB  0 50000 100 100
+	./run_timer FIB  0 5000 500 100
 	@echo "================= Pipes ================="
-	./run_timer PIP  0 500  25  10
+	./run_timer PIP  0 750  25  10
 	@echo "================ Fringe ================="
 	./run_timer FRNG 0 20   25
 	@echo "============== StressTest ==============="
