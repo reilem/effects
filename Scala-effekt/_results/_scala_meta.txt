@@ -1,0 +1,19 @@
+FIB  - [0 - 5000], avg: 25, step: 100
+
+FIB0 - [0 - 5000], avg: 25, step: 100
+
+FIB_X  - [0 - 50000], avg: 25, step: 1000
+
+FIB0_X - [0 - 50000], avg: 25, step: 1000
+
+===
+
+NQ     - [0 - 15], avg: 1, step: 1
+
+NQ0    - [0 - 15], avg: 1, step: 1
+
+===
+
+STRS   - [0 - 500000], avg: 50, step: 10000
+
+STRS0  - [0 - 500000], avg: 10, step: 10000
