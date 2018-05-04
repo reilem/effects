@@ -23,11 +23,13 @@ To run the non-JIT optimised code you need to compile the `Fibonacci.scala`,
 Then place them in their respective paths:
 
 `Effekt/out/artifacts/nqueens_jar/effekt.jar`
+
 `Effekt/out/artifacts/fibonacci_jar/effekt.jar`
+
 `Effekt/out/artifacts/stresstest_jar/effekt.jar`
 
 Now you can run the `timer.sh` script in the following way:
 
-`$ ./timer.sh [FUNCTION_NAME] [LOWER_BOUNDS] [UPPER_BOUNDS] [AVERAGE_COUNT]z
+`$ ./timer.sh [FUNCTION_NAME] [LOWER_BOUNDS] [UPPER_BOUNDS] [AVERAGE_COUNT]`
 
 Or you can run `make test`.

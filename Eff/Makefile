@@ -1,3 +1,10 @@
+install_eff:
+	git clone git@github.com:reilem/eff.git
+	cd eff
+	./configure
+	make
+	sudo make install
+
 run_all_eff:
 	eff Memoization/fibonacci.eff
 	@echo ""
@@ -25,13 +32,6 @@ test_all_eff:
 	@echo ""
 	eff TreeAlgorithm/fringe.eff  | tail -n 18 > _out/FRNG.csv
 
-install_eff_compile:
-	git clone git@github.com:reilem/eff.git
-	cd eff
-	./configure
-	make
-	sudo make install
-
 build_ocaml:
 	@chmod +x build.sh
 	./build.sh
@@ -56,9 +56,9 @@ clean_ocaml:
 	find . -name "*.cmx" -type f -delete
 	find . -name "*.o" -type f -delete
 
-clean_results_ocaml:
+clean_results:
 	rm -r _out
 
-clean_all_ocaml:
+clean_all:
 	make clean
 	make clean_results

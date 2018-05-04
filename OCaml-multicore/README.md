@@ -11,15 +11,15 @@
 
 Add multicore from remote repo:
 
-$ opam remote add multicore https://github.com/ocamllabs/multicore-opam.git
+`$ opam remote add multicore https://github.com/ocamllabs/multicore-opam.git`
 
 Switch to ocaml multicore compiler:
 
-$ opam switch 4.02.2+multicore
+`$ opam switch 4.02.2+multicore`
 
 Setup new switch in the current shell:
 
-$ eval `opam config env`
+``$ eval `opam config env```
 
 ## Execution
 
