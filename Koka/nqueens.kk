@@ -78,7 +78,8 @@ fun timer (f, n : int, m : int)  {
   fun calc_average_time (sum : double, next : int) {
     if (next == 0) then return ((sum / double(m)) / 1000000.0)
     else {
-      fun test () { f(gen(n)) }
+      val t = gen(n)
+      fun test () { f(t) }
       val (duration, _) = elapsed(test)
       val nanos = double(nano-seconds(duration))
       return calc_average_time(sum + nanos, next - 1)
