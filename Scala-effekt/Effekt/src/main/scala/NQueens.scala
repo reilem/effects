@@ -27,7 +27,6 @@ object NQueens {
   }
 
   def queens(n: Int)(implicit choice: Use[Choice]): Control[List[(Int, Int)]] = {
-
     def choose(list: List[Int]): Control[Int] = {
       list match {
         case Nil => fail()
@@ -37,7 +36,6 @@ object NQueens {
         } yield y
       }
     }
-
     def put_queen(x: Int, qns: List[(Int, Int)]): Control[List[(Int, Int)]] = {
       if (x == 0) return pure(qns)
       for {

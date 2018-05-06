@@ -4,7 +4,7 @@ object Timer {
   def main(args: Array[String]): Unit = {
 //    val list: List[(Int, Float)] = timer("NQ", 0, 15, 1, 1)
 //    val list: List[(Int, Float)] = timer("FIB", 0, 5000, 25, 100)
-//    val list: List[(Int, Float)] = timer("STRS", 0, 500000, 50, 10000)
+    val list: List[(Int, Float)] = timer("STRS", 0, 500000, 50, 10000)
 
     val csv = new FileWriter("test.csv")
     csv.append("n,x\n")
