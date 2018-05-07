@@ -21,42 +21,44 @@ object Fringe {
   def step(t: Tree): Control[Fringe.State] = {
     def walk(tree: Tree)(implicit handler: Use[Waiter]): Control[Unit] = {
       tree match {
-        case Leaf(v) => for {
-          res <- wait(v)
-        } yield res
-        case Node(l, r) => walk(l); walk(r)
+        case Leaf(v) => wait(v)
+        case Node(left, right) => for {
+          _ <- walk(left)
+          _ <- walk(right)
+        } yield ()
       }
     }
-    def fringeHandler = new Handler.Basic[Unit, Fringe.State] with Waiter {§
+    def walkHandler = new Handler.Basic[Unit, Fringe.State] with Waiter {
       override def wait(value: Int): Unit => (Unit => Unit => Control[Fringe.State]) => Control[Fringe.State] =
         _ => resume => pure(Waiting(value, resume))
       override def unit: Unit => Fringe.State = _ => Done()
     }
-    pure(fringeHandler { implicit h => walk(t) }.run())
+    pure(walkHandler { implicit h => walk(t) }.run())
   }
 
 
-  def fringe(t1: Tree, t2: Tree): Control[Boolean] = {
-    def stepper(t: Tree): Unit => Control[Fringe.State] = _ => step(t)
+  def fringe(t1: Tree, t2: Tree): Boolean = {
+    def stepper(t: Tree)                                : Unit => Control[Fringe.State] = _ => step(t)
     def resume(k: Unit => Unit => Control[Fringe.State]): Unit => Control[Fringe.State] = k()
     def solve(l: Unit => Control[Fringe.State], r: Unit => Control[Fringe.State]): Control[Boolean] = for {
       left <- l()
       right <- r()
       result <- (left, right) match {
-        case (Waiting(v1, k1), Waiting(v2, k2)) => if (v1 == v2) solve(resume(k1), resume(k2)) else false
-        case (Done(), Done()) => true
-        case _ => false
+        case (Waiting(v1, k1), Waiting(v2, k2)) => if (v1 == v2) solve(resume(k1), resume(k2)) else pure(false)
+        case (Done(), Done()) => pure(true)
+        case (_, _) => pure(false)
       }
     } yield result
-    solve(stepper(t1), stepper(t2))
+    solve(stepper(t1), stepper(t2)).run()
   }
-
 
   def generate(i: Int): Tree = {
-    Leaf(4)
+    val r: Random = Random
+    if (i == 0) Leaf(r.nextInt(100))
+    else Node(generate(i - 1), generate(i - 1))
   }
 
-  def run(t1: Tree, t2: Tree): Control[Boolean] = fringe(t1, t2)
+  def run(t1: Tree, t2: Tree): Boolean = fringe(t1, t2)
 
   def main(args: Array[String]): Unit = {
     if (args.length >= 1) {
