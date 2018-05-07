@@ -1,4 +1,3 @@
-import NQueens.run
 import effekt._
 
 trait State extends Eff {
