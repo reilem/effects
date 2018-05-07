@@ -4,7 +4,8 @@ object Timer {
   def main(args: Array[String]): Unit = {
 //    val list: List[(Int, Float)] = timer("NQ", 0, 15, 1, 1)
 //    val list: List[(Int, Float)] = timer("FIB", 0, 5000, 25, 100)
-    val list: List[(Int, Float)] = timer("STRS", 0, 500000, 50, 10000)
+//    val list: List[(Int, Float)] = timer("STRS", 0, 500000, 50, 10000)
+    val list: List[(Int, Float)] = timer("PIP", 0, 500, 25, 10)
 
     val csv = new FileWriter("test.csv")
     csv.append("n,x\n")
@@ -21,8 +22,9 @@ object Timer {
     println("n,x")
     try {
     for(i <- lowerBounds to upperBounds by step) {
+      val tester = evaluateF(functionName, i)
       val startTime = System.nanoTime()
-      for (_ <- 0 to iterations) evaluateF(functionName, i)
+      for (_ <- 0 to iterations) tester()
       val endTime = System.nanoTime()
       val duration: Float = endTime - startTime
       val res = duration / (1000000 * iterations)
@@ -35,10 +37,13 @@ object Timer {
     timeList
   }
 
-  def evaluateF(functionName: String, i: Int) = functionName match {
-    case "NQ" => NQueens.run(i)
-    case "STRS" => StressTest.run(i)
-    case "FIB" => Fibonacci.run(i)
+  def evaluateF(functionName: String, i: Int): (Unit => Unit) = functionName match {
+    case "NQ" => _ => NQueens.run(i)
+    case "STRS" => _ => StressTest.run(i)
+    case "FIB" => _ => Fibonacci.run(i)
+    case "PIP" =>
+      val t = Pipes.generate(i)
+      _ => Pipes.run(t)
     case _ => throw new IllegalArgumentException("No such function found")
   }
 }

@@ -32,6 +32,9 @@ timer () {
   elif [ "$f_name" == "STRS" ]
   then
     func="java -jar Effekt/out/artifacts/stresstest_jar/effekt.jar"
+  elif [ "$f_name" == "PIP" ]
+  then
+    func="java -jar Effekt/out/artifacts/pipes_jar/effekt.jar"
   else
     return
   fi

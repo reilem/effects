@@ -1,5 +1,7 @@
 import effekt._
 
+import scala.util.Random
+
 trait Checker extends Eff {
   def check(array: List[Int]): Op[Unit]
 }
@@ -15,10 +17,10 @@ object Pipes {
   def findSubArray(array: List[Int])(implicit handler: Use[Checker]): Control[List[Int]] = {
     array match {
       case Nil => pure(Nil)
-      case (hd :: tl) => {
-        check(hd::tl)
-        findSubArray(tl)
-      }
+      case (hd :: tl) => for {
+        _ <- check(hd::tl)
+        res <- findSubArray(tl)
+      } yield res
     }
   }
 
@@ -39,21 +41,30 @@ object Pipes {
       _ => resume => {
         val currentBest = subSearch(0, Nil, Nil, array)
         for {
-          nextBest <- resume(())(())
+          nextBest <- resume()()
         } yield if (currentBest.length > nextBest.length) currentBest else nextBest
       }
 
     override def unit: List[Int] => List[Int] = identity
   }
 
-  def run(problem: List[Int]): Unit = pipesHandler { implicit h => findSubArray(problem) }.run()
+  def generate(i: Int): List[Int] = {
+    val r = Random
+    def gen(n: Int, acc: List[Int]): List[Int] = {
+      if (n == 0) acc
+      else gen(n - 1, r.nextInt(2)::acc)
+    }
+    gen(i, Nil)
+  }
+
+  def run(problem: List[Int]): List[Int] = pipesHandler { implicit h => findSubArray(problem) }.run()
 
   def main(args: Array[String]): Unit = {
     if (args.length >= 1) {
       val n = args(0).toInt
+      val t = generate(n)
       val now = System.currentTimeMillis()
-      // TODO: REPLACE NIL WITH A GENERATED LIST
-      run(Nil)
+      run(t)
       val time = System.currentTimeMillis() - now
       println(time)
     }
