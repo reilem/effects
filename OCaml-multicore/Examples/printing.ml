@@ -16,6 +16,6 @@ let handle_rev f =
   | x -> ()
 
 let _ =
-  handle     program1;
-  print_newline    ();
   handle_rev program1;
+  (* handle program1; *)
+  print_newline ()

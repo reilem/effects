@@ -36,4 +36,6 @@ let handle f =
     | x                 -> (fun s -> [x])
   in handler []
 
+(* let _ = handle program1 *)
+
 let _ = handle program2
