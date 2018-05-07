@@ -35,6 +35,9 @@ timer () {
   elif [ "$f_name" == "PIP" ]
   then
     func="java -jar Effekt/out/artifacts/pipes_jar/effekt.jar"
+  elif [ "$f_name" == "FRNG" ]
+  then
+    func="java -jar Effekt/out/artifacts/fringe_jar/effekt.jar"
   else
     return
   fi

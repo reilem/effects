@@ -5,7 +5,8 @@ object Timer {
 //    val list: List[(Int, Float)] = timer("NQ", 0, 15, 1, 1)
 //    val list: List[(Int, Float)] = timer("FIB", 0, 5000, 25, 100)
 //    val list: List[(Int, Float)] = timer("STRS", 0, 500000, 50, 10000)
-    val list: List[(Int, Float)] = timer("PIP", 0, 500, 25, 10)
+//    val list: List[(Int, Float)] = timer("PIP", 0, 500, 25, 10)
+    val list: List[(Int, Float)] = timer("FRNG", 0, 12, 25, 1)
 
     val csv = new FileWriter("test.csv")
     csv.append("n,x\n")
@@ -17,7 +18,8 @@ object Timer {
   }
 
   def timer(functionName: String, lowerBounds: Int, upperBounds: Int, iterations: Int, step: Int): List[(Int, Float)] = {
-    evaluateF(functionName, upperBounds)
+    val evaluator = evaluateF(functionName, upperBounds)
+    evaluator()
     var timeList: List[(Int, Float)] = Nil
     println("n,x")
     try {
@@ -44,6 +46,9 @@ object Timer {
     case "PIP" =>
       val t = Pipes.generate(i)
       _ => Pipes.run(t)
+    case "FRNG" =>
+      val t = Fringe.generate(i)
+      _ => Fringe.run(t, t)
     case _ => throw new IllegalArgumentException("No such function found")
   }
 }
