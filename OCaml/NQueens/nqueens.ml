@@ -25,8 +25,7 @@ struct
       if x > n then [qs] else
         let rec choose = function
           | [] -> []
-          | y :: ys ->
-              place ((x + 1), ((x, y) :: qs)) @ choose ys
+          | y :: ys -> place ((x + 1), ((x, y) :: qs)) @ choose ys
         in
         choose (available (n, x, qs))
     in
