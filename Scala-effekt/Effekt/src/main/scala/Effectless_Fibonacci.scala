@@ -8,13 +8,13 @@ object Effectless_Fibonacci {
   }
 
   def run(n: Int): Int = {
-    var list: List[(Int, Int)] = List((0, 0), (1, 1), (2, 1))
+    var state: List[(Int, Int)] = List((0, 0), (1, 1), (2, 1))
     def fibo_mem(m: Int): Int = {
-      find(m, list) match {
+      find(m, state) match {
         case Some(x) => x
         case None    =>
           val value: Int = fibo_mem(m - 2) + fibo_mem(m - 1)
-          list = (m, value)::list
+          state = (m, value)::state
           value
       }
     }

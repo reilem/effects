@@ -1,10 +1,5 @@
 import std/time
 
-effect state {
-  fun put(x : int, y : int) : ()
-  fun get(x : int) : int
-}
-
 fun find (n: int, lst: list<(int, int)>) : int {
   match(lst) {
     Nil        -> -1
@@ -12,30 +7,18 @@ fun find (n: int, lst: list<(int, int)>) : int {
   }
 }
 
-fun fibo_mem (n : int) : <state,div,console> int {
-  if (n <= 0) then 0
-  elif (n == 1 || n == 2) then 1
-  else {
-    val x = get(n)
+fun solve (n : int) : div int {
+  var state : list<(int, int)> := [(0, 0), (1, 1), (2, 1)]
+  fun fibo_mem(m : int) : <div, read<_h>,write<_h>> int {
+    val x = find(m, state)
     if (x != -1) then x
     else {
-      val y = fibo_mem(n - 2) + fibo_mem(n - 1)
-      put(n, y)
+      val y = fibo_mem(m - 2) + fibo_mem(m - 1)
+      state := Cons((m, y), state)
       y
     }
   }
-}
-
-fun solve (n : int) {
-  val fibo_handler = handler (s : list<(int, int)>) {
-    return x -> x
-    get (i)  -> resume(find(i, s), s)
-    put (x, y) -> resume((), [(x,y)] + s)
-  }
-  fun fibonacci () {
-    fibo_mem(n)
-  }
-  fibo_handler([], fibonacci)
+  fibo_mem(n)
 }
 
 // TIME TESTING CODE
@@ -73,4 +56,4 @@ fun main () {
   timer_loop(solve, 0, 5000, 25, 100)
 }
 
-// :l ../fibonacci.kk
+// :l ../effectless_fibonacci.kk

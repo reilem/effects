@@ -8,12 +8,11 @@ struct
   ;;
 
   let solve n =
-    let lst = ref [(0,0);(1,1);(2,1)]  in
-      let rec fibo_mem = function
-        | m -> match find m !lst with
-          | Some x -> x
-          | None -> let value = fibo_mem (m - 2) + fibo_mem (m - 1) in
-              lst := ((m,value)::!lst); value
+    let state = ref [(0,0);(1,1);(2,1)]  in
+      let rec fibo_mem m = match find m !state with
+        | Some x -> x
+        | None -> let value = fibo_mem (m - 2) + fibo_mem (m - 1) in
+            state := ((m,value)::!state); value
       in fibo_mem n
 end
 

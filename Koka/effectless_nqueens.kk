@@ -23,7 +23,7 @@ fun solve (n : int) : div list<list<(int, int)>> {
       fun choose (lst : list<(int)>) : div list<list<(int, int)>> {
         match(lst) {
           Nil        -> Nil
-          Cons(y,ys) -> place(x - 1, [(x, y)] + qs) + choose(ys)
+          Cons(y,ys) -> place(x - 1, Cons((x,y), qs)) + choose(ys)
         }
       }
       choose(available(n, x, qs))
