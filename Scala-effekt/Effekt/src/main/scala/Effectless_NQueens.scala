@@ -18,19 +18,19 @@ object Effectless_NQueens {
 
   def run(n: Int): List[List[(Int, Int)]] = {
     def place(x: Int, qs: List[(Int, Int)]): List[List[(Int, Int)]] = {
-      if (x > n) {
+      if (x == 0) {
         List(qs)
       } else {
         def choose(lst: List[Int]): List[List[(Int, Int)]] = {
           lst match {
             case Nil => Nil
-            case y::ys => place(x + 1, (x,y)::qs):::choose(ys)
+            case y::ys => place(x - 1, (x,y)::qs):::choose(ys)
           }
         }
         choose(available(n, x, qs))
       }
     }
-    place(1, Nil)
+    place(n, Nil)
   }
 
   def main(args: Array[String]): Unit = {
