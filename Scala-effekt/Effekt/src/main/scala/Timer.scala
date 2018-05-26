@@ -6,7 +6,9 @@ object Timer {
 //    val list: List[(Int, Float)] = timer("FIB", 0, 5000, 25, 100)
 //    val list: List[(Int, Float)] = timer("STRS", 0, 500000, 50, 10000)
 //    val list: List[(Int, Float)] = timer("PIP", 0, 500, 25, 10)
-    val list: List[(Int, Float)] = timer("FRNG", 0, 12, 25, 1)
+//    val list: List[(Int, Float)] = timer("FRNG", 0, 12, 25, 1)
+    val list: List[(Int, Float)] = timer("EFLS_NQ", 0, 15, 1, 1)
+//    val list: List[(Int, Float)] = timer("EFLS_FIB", 0, 5000, 25, 100)
 
     val csv = new FileWriter("test.csv")
     csv.append("n,x\n")
@@ -41,8 +43,10 @@ object Timer {
 
   def evaluateF(functionName: String, i: Int): (Unit => Unit) = functionName match {
     case "NQ" => _ => NQueens.run(i)
+    case "EFLS_NQ" => _ => Effectless_NQueens.run(i)
     case "STRS" => _ => StressTest.run(i)
     case "FIB" => _ => Fibonacci.run(i)
+    case "EFLS_FIB" => _ => Effectless_Fibonacci.run(i)
     case "PIP" =>
       val t = Pipes.generate(i)
       _ => Pipes.run(t)

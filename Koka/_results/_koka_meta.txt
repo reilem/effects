@@ -1,8 +1,12 @@
 FIB  - [0-5000], avg: 25, step: 100
 
+EFLS FIB - [0-5000], avg: 25, step: 100
+
 ===
 
-NQ   - [0-1], avg: 20, [11-13], avg: 1, step: 1
+NQ   - [0-10], avg: 20, [11-13], avg: 1, step: 1
+
+EFLS NQ - [0-10], avg: 20, [11-14], avg: 1, step: 1
 
 ===
 

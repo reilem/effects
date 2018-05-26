@@ -2,6 +2,10 @@ FIB    - [0 - 5000], avg: 25, step: 100
 
 FIB0   - [0 - 5000], avg: 25, step: 100
 
+EFLS_FIB    - [0 - 5000], avg: 5, step: 100
+
+EFLS_FIB0   - [0 - 5000], avg: 25, step: 100
+
 FIB_X  - [0 - 50000], avg: 25, step: 1000
 
 FIB0_X - [0 - 50000], avg: 25, step: 1000
@@ -11,6 +15,10 @@ FIB0_X - [0 - 50000], avg: 25, step: 1000
 NQ     - [0 - 15], avg: 1, step: 1
 
 NQ0    - [0 - 15], avg: 1, step: 1
+
+EFLS_NQ     - [0 - 15], avg: 1, step: 1
+
+EFLS_NQ0    - [0 - 15], avg: 1, step: 1
 
 ===
 

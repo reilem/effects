@@ -83,7 +83,7 @@ fun timer_loop(f, start : int, stop : int, avg : int, step : int) {
 }
 
 fun main () {
-  timer_loop(solve, 0, 13, 1, 1)
+  timer_loop(solve, 11, 14, 1, 1)
 }
 
 // :l ../effectless_nqueens.kk

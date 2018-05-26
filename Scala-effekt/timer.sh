@@ -38,6 +38,12 @@ timer () {
   elif [ "$f_name" == "FRNG" ]
   then
     func="java -jar Effekt/out/artifacts/fringe_jar/effekt.jar"
+  elif [ "$f_name" == "EFLS_FIB" ]
+  then
+    func="java -jar Effekt/out/artifacts/efls_fibonacci_jar/effekt.jar"
+  elif [ "$f_name" == "EFLS_NQ" ]
+  then
+    func="java -jar Effekt/out/artifacts/efls_nqueens_jar/effekt.jar"
   else
     return
   fi
