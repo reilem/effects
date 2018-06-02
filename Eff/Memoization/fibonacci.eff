@@ -1,22 +1,22 @@
 effect Put : (int * int) -> unit
 effect Get : int -> int option
 
-let rec find n = function
-  | []    -> None
-  | (v,x)::r -> if n = v then Some x else find n r
+let rec find n ((m1, v1), (m2, v2)) =
+  if n = m1 then Some v1 else if n = m2 then Some v2 else None
+;;
 
 let rec fibo_mem = function
-  | 0 -> 0 | 1 -> 1 | 2 -> 1
   | n -> match perform (Get n) with
     | Some x -> x
-    | None -> let value = fibo_mem (n - 2) + fibo_mem (n - 1) in perform (Put (n,value)); value
+    | None -> let value = fibo_mem (n - 2) + fibo_mem (n - 1) in
+        perform (Put (n,value)); value
 
 let store = handler
   | effect (Get n) k    -> (fun s -> k (find n s) s)
-  | effect (Put tup) k  -> (fun s -> k () (tup::s))
+  | effect (Put tup) k  -> (fun (_, s) -> k () (s, tup))
   | x                   -> (fun s -> x)
 
-let solve n = (with store handle fibo_mem n) []
+let solve n = (with store handle fibo_mem n) ((0, 0),(1, 1))
 
 (* TIME TESTING CODE *)
 
@@ -42,4 +42,4 @@ let timer_loop f start stop avg step =
   print_string "n,x\n";
   looper start
 
-let _ = timer_loop solve 0 2500 20 100
+(* let _ = timer_loop solve 0 2500 20 100 *)

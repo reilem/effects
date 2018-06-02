@@ -5,9 +5,9 @@ struct
   effect Put : (int * int) -> unit
   effect Get : int -> int option
 
-  let rec find n = function
-    | []       -> None
-    | (v,x)::r -> if n == v then Some x else find n r
+  let rec find n ((m1, v1), (m2, v2)) =
+    if n = m1 then Some v1 else if n = m2 then Some v2 else None
+  ;;
 
   let rec fibo_mem = function
     | 0 -> 0 | 1 -> 1 | 2 -> 1
@@ -20,7 +20,7 @@ struct
     let handler =
       match fibo_mem n with
       | effect (Get n) k    -> (fun s -> continue k (find n s) s)
-      | effect (Put tup) k  -> (fun s -> continue k () (tup::s))
+      | effect (Put tup) k  -> (fun (_, s) -> continue k () (s, tup))
       | x                   -> (fun s -> x)
-    in handler []
+    in handler ((0, 0), (1, 1))
 end
