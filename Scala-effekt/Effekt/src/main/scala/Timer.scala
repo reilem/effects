@@ -2,13 +2,17 @@ import java.io.FileWriter
 
 object Timer {
   def main(args: Array[String]): Unit = {
+    // Comment this top line and uncomment one the line below it and run this function to perform a time test
+    val list: List[(Int, Float)] = Nil
 //    val list: List[(Int, Float)] = timer("NQ", 0, 15, 1, 1)
 //    val list: List[(Int, Float)] = timer("FIB", 0, 5000, 25, 100)
 //    val list: List[(Int, Float)] = timer("STRS", 0, 500000, 50, 10000)
 //    val list: List[(Int, Float)] = timer("PIP", 0, 500, 25, 10)
-//    val list: List[(Int, Float)] = timer("FRNG", 0, 12, 25, 1)
-    val list: List[(Int, Float)] = timer("EFLS_NQ", 0, 15, 1, 1)
+//    val list: List[(Int, Float)] = timer("FRNG", 0, 13, 25, 1)
+//    val list: List[(Int, Float)] = timer("EFLS_NQ", 0, 15, 1, 1)
 //    val list: List[(Int, Float)] = timer("EFLS_FIB", 0, 5000, 25, 100)
+//    val list: List[(Int, Float)] = timer("EFLS_PIP", 0, 500, 25, 10)
+//    val list: List[(Int, Float)] = timer("EFLS_FRNG", 0, 25, 25, 1)
 
     val csv = new FileWriter("test.csv")
     csv.append("n,x\n")
@@ -50,9 +54,15 @@ object Timer {
     case "PIP" =>
       val t = Pipes.generate(i)
       _ => Pipes.run(t)
+    case "EFLS_PIP" =>
+      val t = Effectless_Pipes.generate(i)
+      _ => Effectless_Pipes.run(t)
     case "FRNG" =>
       val t = Fringe.generate(i)
       _ => Fringe.run(t, t)
+    case "EFLS_FRNG" =>
+      val t = Effectless_Fringe.generate(i)
+      _ => Effectless_Fringe.run(t, t)
     case _ => throw new IllegalArgumentException("No such function found")
   }
 }

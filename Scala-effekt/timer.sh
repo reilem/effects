@@ -44,6 +44,12 @@ timer () {
   elif [ "$f_name" == "EFLS_NQ" ]
   then
     func="java -jar Effekt/out/artifacts/efls_nqueens_jar/effekt.jar"
+  elif [ "$f_name" == "EFLS_PIP" ]
+  then
+    func="java -jar Effekt/out/artifacts/efls_pipes_jar/effekt.jar"
+  elif [ "$f_name" == "EFLS_FRNG" ]
+  then
+    func="java -jar Effekt/out/artifacts/efls_fringe_jar/effekt.jar"
   else
     return
   fi
